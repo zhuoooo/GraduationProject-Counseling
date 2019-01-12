@@ -1,6 +1,32 @@
 # GraduationProject-Counseling
 毕业设计：大学生心理咨询系统
 
+## 快速开发项
+
+- `axios`挂载在全局`Vue`实例上，在模块中直接`this.$ajax({})`就可以发送请求；在`webpack`中使用了代理，请求方式如下：
+
+  ```javascript
+  // webpack 代理设置
+  proxyTable: {
+    '/api': {
+      target: 'https://www.easy-mock.com/mock/5c39a4fb0f501e020225d6a6',  // 通过本地服务器将你的请求转发到这个地址
+      changeOrigin: true,  // 设置这个参数可以避免跨域
+      pathRewrite: {
+        '/api': '/'
+      }
+    }
+  }
+  
+  vm.$ajax({ // 用法与axios完全相同
+    url: '/api/example/mock',
+    method: 'get'
+  }).then((res) => {
+    debugger
+  });
+  ```
+
+  
+
 ## 项目规范相关
 
 ![1547225902507](https://github.com/CharonWynn/GraduationProject-Counseling/blob/master/webui/static/framework.jpg?raw=true)
@@ -32,13 +58,14 @@
   - 用于说明 `commit` 的类别，只允许使用下面 7 个标识。
 
     ```
-    feat：新功能（feature）
-    fix：修补bug
-    docs：文档（documentation）
+    feat： 新功能（feature）
+    fix： 修补bug
+    docs： 文档（documentation）
     style： 格式（不影响代码运行的变动）
-    refactor：重构（即不是新增功能，也不是修改bug的代码变动）
-    test：增加测试
-    chore：构建过程或辅助工具的变动
+    refactor： 重构（即不是新增功能，也不是修改bug的代码变动）
+    update： 代码提交
+    test： 增加测试
+    chore： 构建过程或辅助工具的变动
     ```
 
 - scope
