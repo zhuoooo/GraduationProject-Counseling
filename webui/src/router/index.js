@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Home from '@/module/mod-home/index'
 import Session from '@/module/mod-home/session/index'
+import Dialogue from '@/module/mod-home/session/dialogue'
 import Forum from '@/module/mod-home/forum/index'
 import Center from '@/module/mod-home/center/index'
 import CenterRevise from '@/module/mod-home/center/revise'
@@ -19,11 +20,23 @@ export default new Router({
       name: 'home',
       component: Home
     },
+
+    /**
+     * 咨询会话
+     */
     {
       path: '/session',
       name: 'session',
       component: Session
     },
+    {
+      path: '/session/dialogue',
+      name: 'dialogue',
+      component: Dialogue
+    },
+
+
+
     {
       path: '/forum',
       name: 'forum',
