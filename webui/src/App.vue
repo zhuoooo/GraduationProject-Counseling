@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <router-view />
-    <mt-tabbar id="tabbar" v-model="selected" fixed >
+    <mt-tabbar id="tabbar" v-model="selected" fixed v-if="tabBar">
       <mt-tab-item id="home" @click.native="showHome">
         <img slot="icon" src="../static/imgs/home.png" v-show="chooseH">
         <img slot="icon" src="../static/imgs/unHome.png" v-show="!chooseH">
@@ -27,8 +27,6 @@
 </template>
 
 <script>
-import store from './util/store.js'
-
 export default {
   name: 'App',
   data(){
@@ -38,7 +36,7 @@ export default {
       chooseS: false,
       chooseF: false,
       chooseC: false,
-      tabBar: store.state
+      tabBar: true
     }
   },
   methods: {
@@ -79,11 +77,10 @@ export default {
 
     // 监听路由变化
     $route(to, from){
-      console.log(this.tabBar.tabBar);
       if(to.path == '/' || to.path == '/home' || to.path == '/session' || to.path == '/forum' || to.path == '/center'){
-        store.toggleTabbar(true);
+        this.tabBar = true
       }else{
-        store.toggleTabbar(false);
+        this.tabBar = false;
       }
     }
   },

@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from '@/module/mod-home/index'
+import DoctorList from '@/module/mod-home/home/doctorList'
 import Session from '@/module/mod-home/session/index'
 import Dialogue from '@/module/mod-home/session/dialogue'
 import Forum from '@/module/mod-home/forum/index'
@@ -19,6 +20,11 @@ export default new Router({
       path: '/home',
       name: 'home',
       component: Home
+    },
+    {
+      path: '/doctor/list',
+      name: 'doctorList',
+      component: DoctorList
     },
 
     /**
