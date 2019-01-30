@@ -2,22 +2,22 @@
   <div id="app">
     <router-view />
     <mt-tabbar id="tabbar" v-model="selected" fixed v-if="tabBar">
-      <mt-tab-item id="home" @click.native="showHome">
+      <mt-tab-item id="home" data-name="home" @click.native="showHome">
         <img slot="icon" src="../static/imgs/home.png" v-show="chooseH">
         <img slot="icon" src="../static/imgs/unHome.png" v-show="!chooseH">
         首页
       </mt-tab-item>
-      <mt-tab-item id="session" @click.native="showSession">
+      <mt-tab-item id="session" data-name="session" @click.native="showSession">
         <img slot="icon" src="../static/imgs/session.png" v-show="chooseS">
         <img slot="icon" src="../static/imgs/unSession.png" v-show="!chooseS">
         咨询会话
       </mt-tab-item>
-      <mt-tab-item id="forum" @click.native="showForum">
+      <mt-tab-item id="forum" data-name="forum" @click.native="showForum">
         <img slot="icon" src="../static/imgs/forum.png" v-show="chooseF">
         <img slot="icon" src="../static/imgs/unForum.png" v-show="!chooseF">
         心理论坛
       </mt-tab-item>
-      <mt-tab-item id="center" @click.native="showCenter">
+      <mt-tab-item id="center" data-name="center" @click.native="showCenter">
         <img slot="icon" src="../static/imgs/center.png" v-show="chooseC">
         <img slot="icon" src="../static/imgs/unCenter.png" v-show="!chooseC">
         个人中心
@@ -27,6 +27,8 @@
 </template>
 
 <script>
+import chat from 'util/session.js'
+
 export default {
   name: 'App',
   data(){
@@ -65,18 +67,8 @@ export default {
       this.unShow();
       if(!this.chooseC) this.chooseC = true;
       else this.chooseC = false;
-    }
-  },
-  watch: {
-    selected(newV, oldV){
-      this.$router.push({
-        name: newV
-      })
-      window.localStorage.setItem('tabSelect', newV);
     },
-
-    // 监听路由变化
-    $route(to, from){
+    showTab(to,from){
       if(to.path == '/' || to.path == '/home' || to.path == '/session' || to.path == '/forum' || to.path == '/center'){
         this.tabBar = true
       }else{
@@ -84,8 +76,38 @@ export default {
       }
     }
   },
-  create() {
-    this.selected = window.localStorage.getItem('tabSelect');
+  watch: {
+    selected(newV, oldV){
+      this.$router.push({
+        name: newV
+      })
+      window.sessionStorage.setItem('tabSelect', newV);
+    },
+
+    // 监听路由变化
+    $route(to, from){
+      this.showTab(to, from);
+      if(this.tabBar){
+        this.selected = to.name;
+      }
+    }
+  },
+  mounted() {
+    this.selected = window.sessionStorage.getItem('tabSelect');
+    switch( this.selected ){
+      case 'home':
+        this.showHome();break;
+      case 'session':
+        this.showSession();break;
+      case 'forum':
+        this.showForum();break;
+      case 'center':
+        this.showCenter();break;
+    };
+    this.showTab(this.$router.history.current);
+  },
+  created() {
+    // chat.loop()
   }
 }
 </script>

@@ -5,6 +5,8 @@ import App from '../App'
 import router from '../router/index'
 import ElementUI from 'element-ui'
 import 'util/request'
+import 'util/bus'
+import '../../static/css/base.css'
 
 Vue.use(ElementUI)
 
@@ -12,20 +14,35 @@ import MintUI from 'mint-ui'
 import 'mint-ui/lib/style.css'
 Vue.use(MintUI)
 
-import Axios from 'axios'
-Vue.prototype.$axios = Axios
-// 配置公共url
-Axios.defaults.baseURL = 'https://www.easy-mock.com/mock/5c388b4a4ca7fb6358ce72e9/home'
-
-import '../../static/css/base.css'
-
 // 注册全局组件
 import MyHomeList from '@/module/mod-common/mod-home-list'
 import MyCommList from '@/module/mod-common/mod-comm-list'
 import MyUserLi from '@/module/mod-common/mod-user-cell'
+import MyHeader from '@/module/mod-common/mod-header'
+import MyComment from '@/module/mod-common/mod-comment'
+import MySearch from '@/module/mod-common/mod-my-search'
 Vue.component(MyHomeList.name, MyHomeList)
 Vue.component(MyCommList.name, MyCommList)
 Vue.component(MyUserLi.name, MyUserLi)
+Vue.component(MyHeader.name, MyHeader)
+Vue.component(MyComment.name, MyComment)
+Vue.component(MySearch.name, MySearch)
+
+// 路由守卫
+router.beforeEach((to, from, next)=>{
+  if(to.matched.some(req => req.meta.requireLogin)){
+    if(!window.localStorage.user){
+      MintUI.Toast('请先登录...');
+      next({
+        path: '/login'
+      })
+    }else{
+      next()
+    }
+  }else{
+    next()
+  }
+})
 
 Vue.config.productionTip = false
 
