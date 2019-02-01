@@ -9,10 +9,28 @@
 
     <!-- 导航 -->
     <ul class="navbar">
-      <li v-for="item in navbar" :key="item.id">
-        <router-link :to="item.url">
-          <img :src="item.image">
-          <div>{{item.title}}</div>
+      <li>
+        <router-link to="/">
+          <img src="../../../static/imgs/navbar/PsyTest.png">
+          <div>心理测试</div>
+        </router-link>
+      </li>
+      <li>
+        <router-link to="/expert/list">
+          <img src="../../../static/imgs/navbar/ExpertCon.png">
+          <div>专家咨询</div>
+        </router-link>
+      </li>
+      <li>
+        <router-link to="/forum/release">
+          <img src="../../../static/imgs/navbar/Topic.png">
+          <div>话题发布</div>
+        </router-link>
+      </li>
+      <li>
+        <router-link to="/">
+          <img src="../../../static/imgs/navbar/CaseQuery.png">
+          <div>案例查询</div>
         </router-link>
       </li>
     </ul>
@@ -44,7 +62,6 @@
     data () {
       return {
         imgs: [], //轮播图数据
-        navbar: [],
         experts: [
           {
             "id": 1,
@@ -61,11 +78,6 @@
       .then(res=>{
         this.imgs = res.data.data.swipe
         console.log(this.imgs)
-      })
-      this.$ajax.get('/navbar/4')
-      .then(res=>{
-        this.navbar = res.data.data.navbar
-        console.log(res.data.data.navbar)
       })
       this.$ajax.get('/expert/4')
       .then(res=>{
@@ -108,11 +120,12 @@
   }
   .navbar li a{
     color: #3e3c3d;
-    font-size: 0.9rem;
+    font-size: 0.8rem;
   }
   .navbar li a img{
     width: 25px;
     height: 25px;
+    margin-bottom: 6px;
   }
 
   .home-list{

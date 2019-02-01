@@ -3,23 +3,23 @@
     <router-view />
     <mt-tabbar id="tabbar" v-model="selected" fixed v-if="tabBar">
       <mt-tab-item id="home" data-name="home" @click.native="showHome">
-        <img slot="icon" src="../static/imgs/home.png" v-show="chooseH">
-        <img slot="icon" src="../static/imgs/unHome.png" v-show="!chooseH">
+        <img slot="icon" src="../static/imgs/tabbar/home.png" v-show="chooseH">
+        <img slot="icon" src="../static/imgs/tabbar/unHome.png" v-show="!chooseH">
         首页
       </mt-tab-item>
       <mt-tab-item id="session" data-name="session" @click.native="showSession">
-        <img slot="icon" src="../static/imgs/session.png" v-show="chooseS">
-        <img slot="icon" src="../static/imgs/unSession.png" v-show="!chooseS">
+        <img slot="icon" src="../static/imgs/tabbar/session.png" v-show="chooseS">
+        <img slot="icon" src="../static/imgs/tabbar/unSession.png" v-show="!chooseS">
         咨询会话
       </mt-tab-item>
       <mt-tab-item id="forum" data-name="forum" @click.native="showForum">
-        <img slot="icon" src="../static/imgs/forum.png" v-show="chooseF">
-        <img slot="icon" src="../static/imgs/unForum.png" v-show="!chooseF">
+        <img slot="icon" src="../static/imgs/tabbar/forum.png" v-show="chooseF">
+        <img slot="icon" src="../static/imgs/tabbar/unForum.png" v-show="!chooseF">
         心理论坛
       </mt-tab-item>
       <mt-tab-item id="center" data-name="center" @click.native="showCenter">
-        <img slot="icon" src="../static/imgs/center.png" v-show="chooseC">
-        <img slot="icon" src="../static/imgs/unCenter.png" v-show="!chooseC">
+        <img slot="icon" src="../static/imgs/tabbar/center.png" v-show="chooseC">
+        <img slot="icon" src="../static/imgs/tabbar/unCenter.png" v-show="!chooseC">
         个人中心
       </mt-tab-item>
     </mt-tabbar>
