@@ -10,7 +10,7 @@
     <!-- 导航 -->
     <ul class="navbar">
       <li>
-        <router-link to="/">
+        <router-link to="/psycal">
           <img src="../../../static/imgs/navbar/PsyTest.png">
           <div>心理测试</div>
         </router-link>
@@ -28,7 +28,7 @@
         </router-link>
       </li>
       <li>
-        <router-link to="/">
+        <router-link to="/case">
           <img src="../../../static/imgs/navbar/CaseQuery.png">
           <div>案例查询</div>
         </router-link>
@@ -74,15 +74,14 @@
       }
     },
     created () {
-      this.$ajax.get('/swipe')
-      .then(res=>{
-        this.imgs = res.data.data.swipe
-        console.log(this.imgs)
-      })
-      this.$ajax.get('/expert/4')
-      .then(res=>{
-        this.experts = res.data.data.experts
-      })
+      // this.$ajax.get('/swipe')
+      // .then(res=>{
+      //   this.imgs = res.data.data.swipe
+      // }).catch(err=>console.log(err))
+      // this.$ajax.get('/expert/4')
+      // .then(res=>{
+      //   this.experts = res.data.data.experts
+      // })
     },
   }
 </script>
@@ -143,6 +142,7 @@
     font-weight: 600;
   }
   .title .left a{
+    font-size: 0.8rem;
     color: #7f7f80;
   }
 

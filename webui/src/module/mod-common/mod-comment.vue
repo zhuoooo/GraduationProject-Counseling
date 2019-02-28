@@ -10,7 +10,7 @@
             <p class="name">第二楼楼主</p>
             <p class="post">第二楼 | 2019-01-01</p>
           </div>
-          <div class="right" @click="love(this)">128</div>
+          <div class="right" @click="love">128</div>
         </div>
         <div class="content_user">给对方是否觉得萨里看风景的上课了房间里</div>
         <div class="content_other">
@@ -24,9 +24,8 @@
 
 <script>
   export default{
-    
     name: 'mod-comment',
-    props: ['id'],
+    props: ['comment'],
     data () {
       return {
       }
@@ -34,9 +33,29 @@
     created () {
     },
     methods: {
-      love(ele){
-        console.log(ele);
-        document.querySelector('.comment .content_info .right').classList.add('love');
+      love(e){
+        e.currentTarget.classList.toggle('love');
+        if(!e.currentTarget.classList.contains('love')){
+          // 点赞数加一
+          this.$ajax({
+            method: 'post',
+            url: '/givelike/',
+            params: {
+              postId: '',
+              userId: ''
+            }
+          }).then(res=>{}).catch(err=>console.log(err))
+        }else{
+          // 点赞数减一
+          this.$ajax({
+            method: 'delete',
+            url: '/givelike/',
+            params: {
+              postId: '',
+              userId: ''
+            }
+          }).then(res=>{}).catch(err=>console.log(err))
+        }
       }
     }
   }

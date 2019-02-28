@@ -48,7 +48,7 @@
         }
       }).then((res)=>{
         this.userInfo = res.data
-      })
+      }).catch(err=>console.log(err))
     },
     methods: {
       // 点击保存修改事件

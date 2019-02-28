@@ -6,16 +6,15 @@
         <img src="../../../../static/imgs/write.png">
       </button>
     </form>
-    <ul>
-      <li v-for="section in sections" :key="section.id">
-        <router-link :to="{path: '/forum/section', query: {id: section.id}}">
-          <mod-comm-list :id="section"></mod-comm-list>
-        </router-link>
-      </li>
-      <li>
-        <mod-comm-list></mod-comm-list>
-      </li>
-    </ul>
+    <mt-loadmore :auto-fill="false" :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" ref="loadmore">
+      <ul>
+        <li v-for="section in sections" :key="section.id">
+          <router-link :to="{path: '/forum/section', query: {id: section.id}}">
+            <mod-comm-list :id="section"></mod-comm-list>
+          </router-link>
+        </li>
+      </ul>
+    </mt-loadmore>
   </div>
 </template>
 
@@ -23,14 +22,6 @@
   export default{
     data(){
       return{
-        result: [
-          {'title':'1', 'value': '11'},
-          {'title':'2', 'value': '22'},
-          {'title':'3', 'value': '33'},
-          {'title':'4', 'value': '44'},
-          {'title':'5', 'value': '55'},
-          {'title':'6', 'value': '66'},
-        ],
         sections: [
           {
             'id': 2,
@@ -39,20 +30,62 @@
             'commentNumber': 120,
             'good': 12,
             'time': '2018/01/02',
+          },{
+            'id': 21,
+            'title': '标题1',
+            'content': '焦虑焦虑焦虑焦虑焦虑焦虑焦虑焦虑焦虑焦虑焦虑焦虑焦虑焦虑焦虑焦虑焦虑焦虑焦虑焦虑',
+            'commentNumber': 120,
+            'good': 12,
+            'time': '2018/01/02',
+          },{
+            'id': 211,
+            'title': '标题1',
+            'content': '焦虑焦虑焦虑焦虑焦虑焦虑焦虑焦虑焦虑焦虑焦虑焦虑焦虑焦虑焦虑焦虑焦虑焦虑焦虑焦虑',
+            'commentNumber': 120,
+            'good': 12,
+            'time': '2018/01/02',
           }
-        ]
+        ],
+        allLoaded: false,
+        pageNum: 1,
+        pageSize: 10
       }
+    },
+    created(){
+      // this.pageLoad(this.pageNum, this.pageSize)
     },
     methods: {
       search(){
         this.$router.push({
-          path: '/search'
+          name: 'search',
+          params: {search: 'forum'}
         })
       },
       release(){
         this.$router.push({
           path: '/forum/release'
         })
+      },
+      pageLoad(pageNum, pageSize){
+        this.$ajax({
+          method: 'get',
+          url: '',
+          params: {
+            pageNum,
+            pageSize
+          }
+        }).then(res=>{
+          if(res.data.message.length === 0){
+            this.$toast('没有更多数据');
+            this.allLoaded = true;
+          }
+          this.pageNum++;
+        }).catch(err=>console.log(err))
+      },
+      loadBottom(){
+        this.pageLoad(this.pageNum, this.pageSize)
+        console.log('上拉被执行')
+        this.$refs.loadmore.onBottomLoaded();
       }
     }
   }
@@ -61,6 +94,8 @@
 <style scoped>
   .forum{
     background-color: #f7f7f7;
+    height: calc(100vh - 55px);
+    overflow: scroll;
   }
 
   .forum .search{

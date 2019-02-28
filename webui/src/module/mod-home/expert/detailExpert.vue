@@ -17,7 +17,7 @@
             <p class="post">身份标签 | 2019-01-01</p>
           </div>
         </div>
-        <router-link to="/session/dialogue">
+        <router-link :to="{ name: 'dialogue', params: {theSenderId, theReceiveId}}">
           <mt-button type="primary" size="small" class="button">咨询</mt-button>
         </router-link>
       </div>
@@ -28,6 +28,30 @@
     </div>
   </div>
 </template>
+
+<script>
+  import store from 'util/store'
+  export default {
+    data() {
+      return {
+        detail: {},
+        theReceiveId: this.$route.query.id,
+        theSenderId: /*store.state.loginedUser.id*/1
+      }
+    },
+    created() {
+      this.$ajax({
+        method: 'get',
+        url: '',
+        data: {
+          id: theReceiveId
+        }
+      }).then(res=>{
+        this.detail = res.data;
+      }).catch(err=>console.log(err))
+    }
+  }
+</script>
 
 <style scoped>
   .detail_expert >>> .mint-header{

@@ -2,6 +2,10 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Home from '@/module/mod-home/index'
 import Login from '@/module/mod-home/login/login'
+import Register from '@/module/mod-home/login/register'
+import Psylist from '@/module/mod-home/psycal/psylist'
+import Case from '@/module/mod-home/case/index'
+import CaseSection from '@/module/mod-home/case/section'
 import ExpertList from '@/module/mod-home/expert/expertList'
 import DetailExpert from '@/module/mod-home/expert/detailExpert'
 import Session from '@/module/mod-home/session/index'
@@ -35,6 +39,34 @@ export default new Router({
       name: 'login',
       component: Login
     },
+    {
+      path: '/register',
+      name: 'register',
+      component: Register
+    },
+
+    /**
+     * 案例
+     */
+    {
+      path: '/case',
+      name: 'case',
+      component: Case
+    },
+    {
+      path: '/case/section',
+      name: 'casesection',
+      component: CaseSection
+    },
+
+    /**
+     * 心理咨询
+     */
+    {
+      path: '/psycal',
+      name: 'psycal',
+      component: Psylist
+    },
 
     /**
      * 咨询会话
@@ -48,7 +80,7 @@ export default new Router({
       }
     },
     {
-      path: '/session/dialogue',
+      path: '/session/dialogue/:theSenderId/:theReceiveId',
       name: 'dialogue',
       component: Dialogue,
       meta: {
@@ -98,7 +130,9 @@ export default new Router({
       component: Search
     },
 
-    // 个人中心
+    /**
+     * 个人中心
+     */
     {
       path: '/center',
       name: 'center',

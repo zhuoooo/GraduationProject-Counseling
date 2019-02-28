@@ -1,13 +1,14 @@
 <template>
-  <div class="login">
+  <div class="register">
     <h1>大学生心理咨询平台</h1>
     <form onsubmit="return false;">
       <mt-field placeholder="请输入用户名" v-model="username"></mt-field>
       <mt-field placeholder="请输入密码" type="password" v-model="password"></mt-field>
+      <mt-field placeholder="请输入邮箱" type="email" v-model="email"></mt-field>
+      <mt-field placeholder="请输入手机号" type="tel" v-model="phone"></mt-field>
       <div class="line"></div>
       <div class="button">
-        <mt-button type="primary" size="normal" @submit="login" @click="login">登录</mt-button>
-        <mt-button type="primary" size="normal" @click="register">注册</mt-button>
+        <mt-button type="primary" size="normal" @submit="register" @click="register">注册并登陆</mt-button>
       </div>
     </form>
   </div>
@@ -18,18 +19,22 @@
   export default{
     data(){
       return{
-        username: 'aaa',
-        password: 'aaa',
+        email: '',
+        password: '',
+        phone: '',
+        username: '',
       }
     },
     methods: {
-      login(){
+      register(){
         // this.$ajax({
         //   method: 'post',
-        //   url: '/user/login',
+        //   url: '/user/add',
         //   params: {
-        //     loginName: this.username,
-        //     password: this.password
+        //     email,
+        //     password,
+        //     phone,
+        //     username
         //   }
         // }).then(res=>{
         //   this.$router.push({
@@ -39,13 +44,9 @@
         let userName = this.username
         window.localStorage.setItem('user', userName)
         store.Login()
+        this.$toast('注册成功');
         this.$router.push({
           path: '/home'
-        })
-      },
-      register(){
-        this.$router.push({
-          path: '/register'
         })
       }
     },
@@ -62,7 +63,7 @@
 </script>
 
 <style scoped>
-  .login{
+  .register{
     padding: 20px 0;
   }
   h1{
@@ -72,17 +73,17 @@
     font-weight: 500;
     text-align: center;
   }
-  .login >>> .mint-cell-wrapper{
+  .register >>> .mint-cell-wrapper{
     background-origin: border-box;
   }
-  .login .line{
+  .register .line{
     border-bottom: 1px solid #d9d9d9;
   }
-  .login >>> .mint-button{
+  .register >>> .mint-button{
     padding: 0 30px;
     font-size: 0.9rem;
   }
-  .login .button{
+  .register .button{
     margin-top: 20px;
     text-align: center;
   }

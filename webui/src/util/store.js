@@ -6,7 +6,9 @@ var store = {
   state: {
     logined: false,  // 登录状态
     loginedUser: {
-      userName: ''
+      id: '',
+      userName: '',
+      charinfo: ''
     },
   },
   Login(){
@@ -19,6 +21,11 @@ var store = {
     console.log('调用OutLogin')
     this.state.logined = false;
     this.state.loginedUser.userName = '';
+  },
+  getLocalChar(){
+    if(window.localStorage.getItem('char')){
+      
+    }
   }
 }
 

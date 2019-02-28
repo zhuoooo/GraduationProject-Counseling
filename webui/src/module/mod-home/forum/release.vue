@@ -1,7 +1,7 @@
 <template>
   <div class="release">
     <mod-header title="发布帖子">
-      <mt-button type="primary" size="small">发布</mt-button>
+      <mt-button type="primary" size="small" @click="release">发布</mt-button>
     </mod-header>
 
     <form>
@@ -12,11 +12,31 @@
 </template>
 
 <script>
+  import store from 'util/store.js';
   export default{
     data(){
       return{
         title: '',
         content: ''
+      }
+    },
+    methods: {
+      release(){
+        console.log(111)
+        this.$ajax({
+          url: '/article',
+          method: 'post',
+          params: {
+            content: this.copntent,
+            title: this.title,
+            createAt: '',
+            postId: '',
+            updateAt: '',
+            userId: store.state.loginedUser.id
+          }
+        }).then(res=>{
+          
+        }).catch(err=>console.log(err))
       }
     },
     mounted() {
@@ -37,6 +57,7 @@
     position: relative;
     height: 100%;
     flex-direction: column;
+    margin-top: 50px;
   }
   .release form{
     padding: 0 0 10px;

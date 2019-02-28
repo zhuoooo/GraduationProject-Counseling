@@ -9,7 +9,7 @@ import MintUI from 'mint-ui';
 Vue.prototype.$ajax = axios; //将axios挂载到Vue实例中的$ajax上面alias
 
 // 配置公共url
-axios.defaults.baseURL = 'https://www.easy-mock.com/mock/5c388b4a4ca7fb6358ce72e9/home';
+axios.defaults.baseURL = 'http://z5uo.free.idcfengye.com';
 
 //配置请求拦截器，显示loading图标
 axios.interceptors.request.use(config=>{

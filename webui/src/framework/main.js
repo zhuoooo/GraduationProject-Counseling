@@ -21,12 +21,16 @@ import MyUserLi from '@/module/mod-common/mod-user-cell'
 import MyHeader from '@/module/mod-common/mod-header'
 import MyComment from '@/module/mod-common/mod-comment'
 import MySearch from '@/module/mod-common/mod-my-search'
+import MyPsylist from '@/module/mod-common/mod-psycal-list'
+import MyCaseList from '@/module/mod-common/mod-case-list'
 Vue.component(MyHomeList.name, MyHomeList)
 Vue.component(MyCommList.name, MyCommList)
 Vue.component(MyUserLi.name, MyUserLi)
 Vue.component(MyHeader.name, MyHeader)
 Vue.component(MyComment.name, MyComment)
 Vue.component(MySearch.name, MySearch)
+Vue.component(MyPsylist.name, MyPsylist)
+Vue.component(MyCaseList.name, MyCaseList)
 
 // 路由守卫
 router.beforeEach((to, from, next)=>{

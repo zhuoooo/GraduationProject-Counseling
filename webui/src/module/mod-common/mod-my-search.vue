@@ -22,11 +22,8 @@
     </div>
     <div class="searchResult">
       <ul>
-        <li>
-          <router-link to="/">啊aaaaaaaaaaaaaaaaaaaaaaaaaaaa啊啊</router-link>
-        </li>
-        <li>
-          <router-link to="">啊啊啊</router-link>
+        <li v-for="result in searchResult" :key="result.id">
+          <router-link :to="{name: 'forum', query: {keywordId: result.id}}">{{ result.message }}</router-link>
         </li>
       </ul>
     </div>
@@ -50,24 +47,22 @@
        * 取消事件
        */
       searchCancel(){
-        console.log(111);
         this.$router.go(-1);
       },
       search(e){
         this.currentValue = e.target.value;
-        this.$ajax({
-          url: this.url,
-          method: 'get',
-          data: {
-            value: this.currentValue
-          }
-        }).then(res=>{
-          this.searchResult = res.data.data
-        })
       },
       searchRecordShow(){
         console.log(this.placeholder)
       }
+    },
+    created() {
+      this.$ajax({
+        url: this.url,
+        method: 'get',
+      }).then(res=>{
+        this.searchResult = res.data.data
+      })
     }
   }
 </script>

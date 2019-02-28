@@ -1,6 +1,6 @@
 <template>
   <div class="section">
-    <mod-header title="帖子内容"></mod-header>
+    <mod-header title="案例内容"></mod-header>
     <div class="section_index">
       <h1 class="title">fd</h1>
       <div class="info">
@@ -17,19 +17,6 @@
         <img src="https://avatars2.githubusercontent.com/u/39826728?s=460&v=4">
       </div>
     </div>
-
-    <div class="section_comment">
-      <h1>全部评论</h1>
-      <div v-for="comment in comments">
-        <mod-comment :comment="comment"></mod-comment>
-      </div>
-    </div>
-
-    <div class="section_send_comment">
-      <form @submit="sendComment">
-        <mt-field placeholder="谈谈你的看法" type="textarea" rows="1" v-model="commentContent"></mt-field>
-      </form>
-    </div>
   </div>
 </template>
 
@@ -42,16 +29,12 @@
           'id': 2,
           'userName': '张三',
           'title': 'title'
-        },
-        comments: [],
-        pageNum: 1,
-        pageSize: 8,
-        commentContent: ''
+        }
       }
     },
     created(){
       // this.$ajax({
-      //   url: '/section',
+      //   url: '/case/' + this.id,
       //   method: 'get',
       //   data: {
       //     id: this.id
@@ -59,30 +42,6 @@
       // }).then(res=>{
       //   this.section = res.data.section
       // }).catch(err=>console.log(err))
-      this.$ajax({
-        url: `/comment/post/${this.id}`,
-        params: {
-          pageNum: this.pageNum,
-          pageSize: this.pageSize
-        }
-      }).then(res=>{}).catch(err=>console.log(err))
-    },
-    methods: {
-      sendComment(){
-        this.$ajax({
-          url: '/comment',
-          method: 'post',
-          params: {
-            commentContent: this.commentContent,
-            commentsId: 1,
-            createAt: new Date(Date.now()).toLocaleDateString(),
-            parentId: 1,
-            postId: 1,
-            updateAt: new Date(Date.now()).toLocaleDateString(),
-            userId: 1
-          }
-        }).then(res=>{}).catch(err=>console.log(err))
-      }
     }
   }
 </script>
@@ -97,7 +56,6 @@
   .section .section_index{
     padding: 10px;
     background-color: #fff;
-    margin-top: 40px;
   }
   .section .section_index h1{
     font-weight: 500;

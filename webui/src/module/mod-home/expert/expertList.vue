@@ -29,7 +29,7 @@
       this.$ajax.get('/expert/0')
       .then(res=>{
         this.experts = res.data.data.experts
-      })
+      }).catch(err=>console.log(err))
     }
   }
 </script>

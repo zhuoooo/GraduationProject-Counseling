@@ -9,7 +9,7 @@
           <router-link :to="{path: '/center/revise', query: {value: 'userName'}}" class="router">
             <div class="title">
               <span class="info">用户名：</span>
-              <span class="value">{{userInfo.userName}}</span>
+              <span class="value" >{{userInfo.userName}}</span>
             </div>
             <div class="alt">></div>
           </router-link>
@@ -78,16 +78,16 @@
         })
       }
     },
-    create(){
-      this.$ajax({
-        methods: 'post',
-        url: '/userInfo',
-        data: {
-          userName: this.userName
-        }
-      }).then((res)=>{
-        this.userInfo = res.data
-      })
+    created(){
+      // this.$ajax({
+      //   methods: 'post',
+      //   url: '/userInfo',
+      //   data: {
+      //     userName: this.userName
+      //   }
+      // }).then((res)=>{
+      //   this.userInfo = res.data
+      // }).catch(err=>console.log(err))
     }
 
   }
