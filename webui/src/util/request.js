@@ -12,15 +12,15 @@ Vue.prototype.$ajax = axios; //将axios挂载到Vue实例中的$ajax上面alias
 axios.defaults.baseURL = 'http://z5uo.free.idcfengye.com';
 
 //配置请求拦截器，显示loading图标
-axios.interceptors.request.use(config=>{
-  MintUI.Indicator.open({
-    text: '拼命加载中'
-  });
-  return config;
-});
+// axios.interceptors.request.use(config=>{
+//   MintUI.Indicator.open({
+//     text: '拼命加载中'
+//   });
+//   return config;
+// });
 
-//配置响应拦截器，关闭loading图标
-axios.interceptors.response.use(response=>{
-  MintUI.Indicator.close();
-  return response;
-})
+// //配置响应拦截器，关闭loading图标
+// axios.interceptors.response.use(response=>{
+//   MintUI.Indicator.close();
+//   return response;
+// })

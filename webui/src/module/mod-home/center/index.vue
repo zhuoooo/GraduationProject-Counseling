@@ -1,39 +1,39 @@
 <template>
   <div class="center">
     <div class="photo">
-      <img @click="aaa" src="../../../../static/imgs/userphoto.png" alt="userphoto">
+      <img src="/static/imgs/userphoto.png" alt="userphoto">
     </div>
     <div class="info">
       <ul>
         <li>
-          <router-link :to="{path: '/center/revise', query: {value: 'userName'}}" class="router">
+          <router-link to="/center/revise" class="router">
             <div class="title">
               <span class="info">用户名：</span>
-              <span class="value" >{{userInfo.userName}}</span>
+              <span class="value" >{{ userName }}</span>
             </div>
             <div class="alt">></div>
           </router-link>
         </li>
         <li>
-          <router-link :to="{path: '/center/revise', query: {value: 'phone'}}" class="router">
+          <router-link to="/center/revise" class="router">
             <div class="title">
               <span class="info">手机号：</span>
-              <span class="value">{{ userInfo.phone }}</span>
+              <span class="value">{{ userPhone }}</span>
             </div>
             <div class="alt">></div>
           </router-link>
         </li>
         <li>
-          <router-link :to="{path: '/center/revise', query: {value: 'email'}}" class="router">
+          <router-link to="/center/revise" class="router">
             <div class="title">
               <span class="info">邮箱：</span>
-              <span class="value">暂未绑定</span>
+              <span class="value">{{ userEmail }}</span>
             </div>
             <div class="alt">></div>
           </router-link>
         </li>
         <li>
-          <router-link :to="{path: '/center/revise', query: {value: 'password'}}" class="router">
+          <router-link to="/center/password" class="router">
             <div class="title">
               <span class="info">密码修改</span>
             </div>
@@ -41,7 +41,7 @@
           </router-link>
         </li>
         <li>
-          <router-link :to="{path: '/center/revise', query: {value: 'sugges'}}" class="router">
+          <router-link to="/center/feedback" class="router">
             <div class="title">
               <span class="info">意见反馈</span>
             </div>
@@ -57,22 +57,17 @@
 </template>
 
 <script>
-  import store from 'util/store'
   export default {
-    data(){
+    data() {
       return {
-        userName: '',
-        userInfo: {}
+        userName: this.$store.getters.getUserName,
+        userPhone: this.$store.getters.getUserPhone,
+        userEmail: this.$store.getters.getUserEmail,
       }
     },
     methods: {
-      aaa(){
-        console.log(store)
-      },
-      outLogin(){
-        window.localStorage.removeItem('user')
-        store.OutLogin()
-        console.log(store)
+      outLogin() {
+        this.$store.commit('changeLogin', { token: '', userId: ''});
         this.$router.push({
           path: '/login'
         })

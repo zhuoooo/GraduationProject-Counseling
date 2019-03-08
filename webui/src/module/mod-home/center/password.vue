@@ -10,9 +10,9 @@
     </mt-header>
 
     <div class="revise_choose">
-      <mt-field label="用户名" placeholder="请输入用户名" v-model="username"></mt-field>
-      <mt-field label="手机号" placeholder="请输入手机号" type="tel" v-model="phone"></mt-field>
-      <mt-field label="邮箱" placeholder="请输入邮箱" type="email" v-model="email"></mt-field>
+      <mt-field type="password" v-model="oldPwd" placeholder="请输入原密码"></mt-field>
+      <mt-field type="password" v-model="newPwd" placeholder="请输入新密码"></mt-field>
+      <mt-field type="password" v-model="newPwd2" placeholder="再次输入新密码" @input="verify"></mt-field>
     </div>
   </div>
 </template>
@@ -21,16 +21,26 @@
   export default {
     data () {
       return {
-        title: '修改信息',
-        username: this.$store.getters.getUserName,
-        phone: this.$store.getters.getUserPhone,
-        email: this.$store.getters.getUserEmail,
+        title: '修改密码',
+        oldPwd: '',
+        newPwd: '',
+        newPwd2: '',
       }
     },
     methods: {
+      verify() {
+        console.log(11)
+      },
       // 点击保存修改事件
-      revise(){
-        this.$store.dispatch('revise', { email: this.eamil, username: this.username, phone: this.phone })
+      revise() {
+        if(this.newPwd !== this.newPwd2){
+          this.$toast('密码不一致');
+          return;
+        }else if(this.oldPwd !== this.$store.getters.getUserPwd) {
+          this.$toast('密码错误')
+        }else{
+          this.$store.dispatch('resetPwd', { password: newPwd });
+        }
       },
     }
   }
@@ -55,18 +65,17 @@
 
   .revise .revise_choose{
     padding: 20px 0;
-    font-size: 0.9rem;
   }
-  /* .revise .revise_choose,
+  .revise .revise_choose,
   .revise .revise_choose >>> a,
   .revise .revise_choose >>> div{
     background: transparent;
     border: none;
-  } */
-  .revise >>> .mint-field-core, .revise >>> .mint-cell-text{
+  }
+  .revise >>> .mint-field-core{
     font-size: 0.9rem;
-    /* padding-left: 10px; */
-    /* border-bottom: 1px solid #1c9bfc; */
-    /* background-color: transparent; */
+    padding-left: 10px;
+    border-bottom: 1px solid #1c9bfc;
+    background-color: transparent;
   }
 </style>

@@ -28,35 +28,47 @@
     props: ['comment'],
     data () {
       return {
+        otherComment: [],
+        pageNum: 1,
+        pageSize: 5
       }
     },
     created () {
+      this.$ajax({
+        url: `/comment/parentId/${comment.id}`,
+        params: {
+          pageNum: this.pageNum,
+          pageSize: this.pageSize
+        }
+      }).then(res=>{
+        this.otherComment = res.data
+      }).catch(err=>console.log(err))
     },
     methods: {
-      love(e){
-        e.currentTarget.classList.toggle('love');
-        if(!e.currentTarget.classList.contains('love')){
-          // 点赞数加一
-          this.$ajax({
-            method: 'post',
-            url: '/givelike/',
-            params: {
-              postId: '',
-              userId: ''
-            }
-          }).then(res=>{}).catch(err=>console.log(err))
-        }else{
-          // 点赞数减一
-          this.$ajax({
-            method: 'delete',
-            url: '/givelike/',
-            params: {
-              postId: '',
-              userId: ''
-            }
-          }).then(res=>{}).catch(err=>console.log(err))
-        }
-      }
+      // love(e){
+      //   e.currentTarget.classList.toggle('love');
+      //   if(!e.currentTarget.classList.contains('love')){
+      //     // 点赞数加一
+      //     this.$ajax({
+      //       method: 'post',
+      //       url: '/givelike/',
+      //       params: {
+      //         postId: '',
+      //         userId: ''
+      //       }
+      //     }).then(res=>{}).catch(err=>console.log(err))
+      //   }else{
+      //     // 点赞数减一
+      //     this.$ajax({
+      //       method: 'delete',
+      //       url: '/givelike/',
+      //       params: {
+      //         postId: '',
+      //         userId: ''
+      //       }
+      //     }).then(res=>{}).catch(err=>console.log(err))
+      //   }
+      // }
     }
   }
 </script>
@@ -105,14 +117,14 @@
     left: -100%;
     height: 16px;
     display: block;
-    background: url('../../../static/imgs/unlove.png') no-repeat center;
+    background: url('/static/imgs/unlove.png') no-repeat center;
     background-size: 14px 16px;
   }
   .comment .info .love{
     color: #1c9bfc;
   }
   .comment .info .love::before{
-    background: url('../../../static/imgs/love.png') no-repeat center;
+    background: url('/static/imgs/love.png') no-repeat center;
     background-size: 14px 16px;
   }
   .comment .info .comment_content .content_other,

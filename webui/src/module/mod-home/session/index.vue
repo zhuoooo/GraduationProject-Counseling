@@ -2,7 +2,7 @@
   <div class="session">
     <mt-swipe :auto="4000">
       <mt-swipe-item>
-        <img src="../../../../static/imgs/图层2.png">
+        <img src="/static/imgs/图层2.png">
       </mt-swipe-item>
     </mt-swipe>
     <div class="session_list">
@@ -25,7 +25,6 @@
 </template>
 
 <script>
-  import store from 'util/store'
   export default{
     data(){
       return {
@@ -39,6 +38,9 @@
           }
         ],
       }
+    },
+    created() {
+      // this.sessions = this.$store.getters.getCharInfo;
     }
   }
 </script>

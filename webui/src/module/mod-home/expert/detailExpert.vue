@@ -30,13 +30,12 @@
 </template>
 
 <script>
-  import store from 'util/store'
   export default {
     data() {
       return {
         detail: {},
         theReceiveId: this.$route.query.id,
-        theSenderId: /*store.state.loginedUser.id*/1
+        theSenderId: /*this.$store.getter.getUserId*/1
       }
     },
     created() {

@@ -45,7 +45,9 @@
         })
       },
       goback(){
-        this.$router.go(-1);
+        this.$router.push({
+          path: '/home'
+        });
       },
       loadBottom(){
         this.pageLoad(this.pageNum, this.pageSize)
@@ -53,9 +55,8 @@
         this.$refs.loadmore.onBottomLoaded();
       },
       pageLoad(pageNum, pageSize){
-        let userid = window.localStorage.getItem('user');
-        if(this.$route.query.keyword){
-          if(!userid){
+        if(!this.$route.query.keyword){
+          if(!this.$store.getters.getUserToken){
             // 未登录
             this.$ajax({
               method: 'get',
@@ -76,7 +77,7 @@
             // 登录
             this.$ajax({
               method: 'get',
-              url: '/case/user/' + userid,
+              url: '/case/user/' + this.$store.getters.getUserId,
               params: {
                 pageNum: this.pageNum,
                 pageSize: this.pageSize
@@ -109,14 +110,15 @@
       },
     },
     created(){
-      this.pageLoad(this.pageNum, this.pageSize)
-    }
+      // this.pageLoad(this.pageNum, this.pageSize)
+    },
   }
 </script>
 
 <style scoped>
   .case{
     background-color: #f7f7f7;
+    height: 100vh;
   }
 
   .case .search{

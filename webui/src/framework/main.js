@@ -3,6 +3,7 @@
 import Vue from 'vue'
 import App from '../App'
 import router from '../router/index'
+import store from '@/store/index'
 import ElementUI from 'element-ui'
 import 'util/request'
 import 'util/bus'
@@ -33,20 +34,20 @@ Vue.component(MyPsylist.name, MyPsylist)
 Vue.component(MyCaseList.name, MyCaseList)
 
 // 路由守卫
-router.beforeEach((to, from, next)=>{
-  if(to.matched.some(req => req.meta.requireLogin)){
-    if(!window.localStorage.user){
-      MintUI.Toast('请先登录...');
-      next({
-        path: '/login'
-      })
-    }else{
-      next()
-    }
-  }else{
-    next()
-  }
-})
+// router.beforeEach((to, from, next)=>{
+//   if(to.matched.some(req => req.meta.requireLogin)){
+//     if(!store.getters.getToken){
+//       MintUI.Toast('请先登录...');
+//       next({
+//         path: '/login'
+//       })
+//     }else{
+//       next()
+//     }
+//   }else{
+//     next()
+//   }
+// })
 
 Vue.config.productionTip = false
 
@@ -54,6 +55,7 @@ Vue.config.productionTip = false
 new Vue({
   el: '#app',
   router,
+  store,
   components: { App },
   template: '<App/>'
 })

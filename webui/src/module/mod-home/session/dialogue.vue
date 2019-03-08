@@ -6,7 +6,7 @@
       </router-link>
       <router-link to="/session" slot="right">
         <mt-button>
-          <img src="../../../../static/imgs/tabbar/unCenter.png">
+          <img src="/static/imgs/tabbar/unCenter.png">
         </mt-button>
       </router-link>
     </mt-header>
@@ -88,7 +88,6 @@
         theReceiveId: this.$route.params.theReceiveId,
         pageNum: 1,
         pageSize: 10,
-
       }
     },
     created(){
@@ -144,9 +143,9 @@
       },
     },
     mounted() {
-      let wH = window.screen.height + 'px'; 
+      let wH = window.screen.height + 'px';
       document.querySelector('body').setAttribute('style', 'height:' + wH)
-      document.querySelector('#app').setAttribute('style', 'padding: 0;height:' + wH)
+      document.querySelector('#app').setAttribute('style', 'padding: 0 0 40px 0;height:' + wH)
       if(document.querySelector('body .dialogue_index').offsetHeight < window.screen.height - 77){
         document.querySelector('body .dialogue_index').setAttribute('style', `height: calc(${wH} - 77px)`)
       }
@@ -177,11 +176,9 @@
   .dialogue_index{
     padding: 10px;
     box-sizing: border-box;
-    overflow-y: auto;
-    margin: 40px 0;
-  }
-  .dialogue_index >>> .mint-loadmore{
-    height: 100%;
+    /* overflow-y: auto; */
+    margin: 40px 0 0;
+    height: calc(100vh - 77px);
   }
   .dialogue_index .time{
     width: fit-content;

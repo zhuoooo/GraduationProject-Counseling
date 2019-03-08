@@ -1,6 +1,10 @@
 <template>
   <div class="section">
-    <mod-header title="案例内容"></mod-header>
+    <mt-header title="案例内容" fixed>
+      <router-link to="/case" slot="left">
+        <mt-button icon="back"></mt-button>
+      </router-link>
+    </mt-header>
     <div class="section_index">
       <h1 class="title">fd</h1>
       <div class="info">
@@ -54,6 +58,7 @@
   }
 
   .section .section_index{
+    margin-top: 40px;
     padding: 10px;
     background-color: #fff;
   }

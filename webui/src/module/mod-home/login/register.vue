@@ -15,7 +15,7 @@
 </template>
 
 <script>
-  import store from 'util/store'
+  // import store from 'util/store'
   export default{
     data(){
       return{
@@ -27,23 +27,11 @@
     },
     methods: {
       register(){
-        // this.$ajax({
-        //   method: 'post',
-        //   url: '/user/add',
-        //   params: {
-        //     email,
-        //     password,
-        //     phone,
-        //     username
-        //   }
-        // }).then(res=>{
-        //   this.$router.push({
-        //     path: '/home'
-        //   })
-        // }).catch(err=>console.log(err))
-        let userName = this.username
-        window.localStorage.setItem('user', userName)
-        store.Login()
+        if(this.username == '' || this.password == ''){
+          this.$toast('请输入完整信息');
+          return
+        }
+        this.$store.dispatch('login', { username: this.username, password: this.password, email: this.email, phone: this.phone });
         this.$toast('注册成功');
         this.$router.push({
           path: '/home'
@@ -54,6 +42,9 @@
       let wH = window.screen.height + 'px';
       document.querySelector('body').setAttribute('style', 'background: #fff;')
       document.querySelector('#app').setAttribute('style', 'padding: 0;height:' + wH)
+      Array.from(document.querySelectorAll('.login .mint-field input')).forEach(val=>{
+        val.setAttribute('required', 'required');
+      })
     },
     beforeDestroy() {
       document.querySelector('body').removeAttribute('style')

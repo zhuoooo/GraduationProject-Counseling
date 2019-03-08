@@ -69,10 +69,10 @@
       pageLoad(pageNum, pageSize){
         this.$ajax({
           method: 'get',
-          url: '',
+          url: '/article/all',
           params: {
-            pageNum,
-            pageSize
+            pageNum: pageNum,
+            pageSize: pageSize
           }
         }).then(res=>{
           if(res.data.message.length === 0){
