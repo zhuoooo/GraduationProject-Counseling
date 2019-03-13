@@ -17,8 +17,15 @@
     data(){},
     methods: {
       goback(){
-        this.$router.go(-1);
-      }
+        // this.$router.go(-1);
+        console.log(this.to);
+        // (this.to === undefined)?this.$router.go(-1):this.$router.push({path:this.to});
+        this.$router.back()
+      },
+    },
+
+    beforeRouteUpdate(to, from, next){
+      console.log('触发路由守卫update')
     }
   }
 </script>
@@ -32,6 +39,10 @@
     line-height: 1.8;
     padding: 10px;
     justify-content: space-between;
+    position: fixed;
+    width: 100%;
+    box-sizing: border-box;
+    top: 0;
   }
   header .left, header .right{
     flex: 0.5;

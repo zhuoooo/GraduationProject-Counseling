@@ -1,6 +1,10 @@
 <template>
   <div class="section">
-    <mod-header title="帖子内容"></mod-header>
+    <mt-header title="帖子内容" fixed>
+      <router-link to="/forum" slot="left">
+        <mt-button icon="back"></mt-button>
+      </router-link>
+    </mt-header>
     <div class="section_index">
       <h1 class="title">fd</h1>
       <div class="info">
@@ -16,19 +20,23 @@
         fdafdafdsfffffffffffffffffffffffffffffffffffffffffffffffffff夫
         <img src="https://avatars2.githubusercontent.com/u/39826728?s=460&v=4">
       </div>
+      <div class="giveLove">
+        <div class="right" @click="love">128</div>
+      </div>
     </div>
 
     <div class="section_comment">
       <h1>全部评论</h1>
-      <div>
-        <mod-comment></mod-comment>
-        <mod-comment></mod-comment>
+      <div v-for="comment in comments">
+        <mod-comment :comment="comment"></mod-comment>
       </div>
+        <mod-comment :comment="comment"></mod-comment>
+        <mod-comment :comment="comment"></mod-comment>
     </div>
 
     <div class="section_send_comment">
-      <form>
-        <mt-field placeholder="谈谈你的看法" type="textarea" rows="1"></mt-field>
+      <form @submit="sendComment">
+        <mt-field placeholder="谈谈你的看法" type="textarea" rows="1" v-model="commentContent"></mt-field>
       </form>
     </div>
   </div>
@@ -38,24 +46,83 @@
   export default{
     data(){
       return {
-        id: this.$router.query.id,
+        id: this.$route.query.id,
         section: {
           'id': 2,
           'userName': '张三',
           'title': 'title'
-        }
+        },
+        comments: [],
+        pageNum: 1,
+        pageSize: 8,
+        commentContent: ''
       }
     },
     created(){
-      // this.$ajax({
-      //   url: '/section',
-      //   method: 'get',
-      //   data: {
-      //     id: this.id
-      //   }
-      // }).then(res=>{
-      //   this.section = res.data.section
-      // })
+      this.$ajax({
+        url: `/article/${this.id}`,
+        method: 'get'
+      }).then(res=>{
+        this.section = res.data
+      }).catch(err=>console.log(err))
+
+      // 获取评论
+      this.$ajax({
+        url: `/comment/post/${this.id}`,
+        params: {
+          pageNum: this.pageNum,
+          pageSize: this.pageSize
+        }
+      }).then(res=>{
+        this.comments = res.data;
+      }).catch(err=>console.log(err))
+    },
+    methods: {
+      sendComment(){
+        this.$ajax({
+          url: '/comment',
+          method: 'post',
+          params: {
+            commentContent: this.commentContent,
+            commentsId: 1,
+            createAt: new Date(Date.now()).toLocaleDateString(),
+            parentId: 1,
+            postId: 1,
+            updateAt: new Date(Date.now()).toLocaleDateString(),
+            userId: 1
+          }
+        }).then(res=>{}).catch(err=>console.log(err))
+      },
+      love(e){
+        e.currentTarget.classList.toggle('love');
+        if(!e.currentTarget.classList.contains('love')){
+          // 点赞数加一
+          this.$ajax({
+            method: 'post',
+            url: '/givelike/',
+            params: {
+              postId: this.id,
+              userId: this.$store.getters.getUserId
+            },
+            header: {
+              token: this.$store.getters.getUserToken
+            }
+          }).then(res=>{}).catch(err=>console.log(err))
+        }else{
+          // 点赞数减一
+          this.$ajax({
+            method: 'delete',
+            url: '/givelike/',
+            params: {
+              postId: this.id,
+              userId: this.$store.getters.getUserId
+            },
+            header: {
+              token: this.$store.getters.getUserToken
+            }
+          }).then(res=>{}).catch(err=>console.log(err))
+        }
+      }
     }
   }
 </script>
@@ -70,6 +137,7 @@
   .section .section_index{
     padding: 10px;
     background-color: #fff;
+    margin-top: 40px;
   }
   .section .section_index h1{
     font-weight: 500;
@@ -99,6 +167,36 @@
     height: 40px;
     border-radius: 50%;
     margin-right: 10px;
+  }
+
+  .section .section_index .giveLove{
+    text-align: right;
+  }
+  .section .section_index .right{
+    color: #b1b1b1;
+    cursor: pointer;
+    font-size: 1rem;
+    margin-top: 10px;
+    position: relative;
+    display: inline-block;
+  }
+  .section .section_index .right::before{
+    top: 2px;
+    content: '';
+    width: 14px;
+    left: -80%;
+    height: 16px;
+    display: block;
+    position: absolute;
+    background: url('/static/imgs/unlove.png') no-repeat center;
+    background-size: 14px 16px;
+  }
+  .section .section_index .love{
+    color: #1c9bfc;
+  }
+  .section .section_index .love::before{
+    background: url('/static/imgs/love.png') no-repeat center;
+    background-size: 14px 16px;
   }
 
   .section .section_index .section_info{

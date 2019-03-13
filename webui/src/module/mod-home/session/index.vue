@@ -2,13 +2,13 @@
   <div class="session">
     <mt-swipe :auto="4000">
       <mt-swipe-item>
-        <img src="../../../../static/imgs/图层2.png">
+        <img src="/static/imgs/图层2.png">
       </mt-swipe-item>
     </mt-swipe>
     <div class="session_list">
       <ul>
         <li v-for="session in sessions" :key="session.id">
-          <router-link :to="{path: '/session/dialogue', query: {dialogueUser: session.name}}" class="router">
+          <router-link :to="{ name: 'dialogue', params: { theSenderId: 1, theReceiveId: 1 }}" class="router">
             <img :src="session.img">
             <div>
               <p class="info">
@@ -38,6 +38,9 @@
           }
         ],
       }
+    },
+    created() {
+      // this.sessions = this.$store.getters.getCharInfo;
     }
   }
 </script>

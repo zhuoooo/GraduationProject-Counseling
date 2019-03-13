@@ -68,6 +68,18 @@ export default {
       if(!this.chooseC) this.chooseC = true;
       else this.chooseC = false;
     },
+    switchTab(ele){
+      switch(ele){
+        case 'home':
+          this.showHome();break;
+        case 'session':
+          this.showSession();break;
+        case 'forum':
+          this.showForum();break;
+        case 'center':
+          this.showCenter();break;
+      };
+    },
     showTab(to,from){
       if(to.path == '/' || to.path == '/home' || to.path == '/session' || to.path == '/forum' || to.path == '/center'){
         this.tabBar = true
@@ -90,20 +102,12 @@ export default {
       if(this.tabBar){
         this.selected = to.name;
       }
+      this.switchTab( this.selected )
     }
   },
   mounted() {
     this.selected = window.sessionStorage.getItem('tabSelect');
-    switch( this.selected ){
-      case 'home':
-        this.showHome();break;
-      case 'session':
-        this.showSession();break;
-      case 'forum':
-        this.showForum();break;
-      case 'center':
-        this.showCenter();break;
-    };
+    this.switchTab( this.selected )
     this.showTab(this.$router.history.current);
   },
   created() {

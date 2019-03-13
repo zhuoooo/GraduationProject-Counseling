@@ -10,7 +10,7 @@
             <p class="name">第二楼楼主</p>
             <p class="post">第二楼 | 2019-01-01</p>
           </div>
-          <div class="right" @click="love(this)">128</div>
+          <div class="right" @click="love">128</div>
         </div>
         <div class="content_user">给对方是否觉得萨里看风景的上课了房间里</div>
         <div class="content_other">
@@ -24,20 +24,51 @@
 
 <script>
   export default{
-    
     name: 'mod-comment',
-    props: ['id'],
+    props: ['comment'],
     data () {
       return {
+        otherComment: [],
+        pageNum: 1,
+        pageSize: 5
       }
     },
     created () {
+      this.$ajax({
+        url: `/comment/parentId/${comment.id}`,
+        params: {
+          pageNum: this.pageNum,
+          pageSize: this.pageSize
+        }
+      }).then(res=>{
+        this.otherComment = res.data
+      }).catch(err=>console.log(err))
     },
     methods: {
-      love(ele){
-        console.log(ele);
-        document.querySelector('.comment .content_info .right').classList.add('love');
-      }
+      // love(e){
+      //   e.currentTarget.classList.toggle('love');
+      //   if(!e.currentTarget.classList.contains('love')){
+      //     // 点赞数加一
+      //     this.$ajax({
+      //       method: 'post',
+      //       url: '/givelike/',
+      //       params: {
+      //         postId: '',
+      //         userId: ''
+      //       }
+      //     }).then(res=>{}).catch(err=>console.log(err))
+      //   }else{
+      //     // 点赞数减一
+      //     this.$ajax({
+      //       method: 'delete',
+      //       url: '/givelike/',
+      //       params: {
+      //         postId: '',
+      //         userId: ''
+      //       }
+      //     }).then(res=>{}).catch(err=>console.log(err))
+      //   }
+      // }
     }
   }
 </script>
@@ -86,14 +117,14 @@
     left: -100%;
     height: 16px;
     display: block;
-    background: url('../../../static/imgs/unlove.png') no-repeat center;
+    background: url('/static/imgs/unlove.png') no-repeat center;
     background-size: 14px 16px;
   }
   .comment .info .love{
     color: #1c9bfc;
   }
   .comment .info .love::before{
-    background: url('../../../static/imgs/love.png') no-repeat center;
+    background: url('/static/imgs/love.png') no-repeat center;
     background-size: 14px 16px;
   }
   .comment .info .comment_content .content_other,
