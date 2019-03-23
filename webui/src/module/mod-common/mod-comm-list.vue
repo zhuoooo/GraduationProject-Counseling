@@ -1,17 +1,15 @@
 <template>
   <div class="comm-list">
-    <p class="title">{{id.title}}</p>
+    <p class="title">{{section.title}}</p>
     <section class="intro">
-      {{id.content}}
+      {{section.content}}
     </section>
-    <div class="img">
-      <img src="https://avatars2.githubusercontent.com/u/39826728?s=460&v=4">
-      <img src="https://avatars2.githubusercontent.com/u/39826728?s=460&v=4">
-      <img src="https://avatars2.githubusercontent.com/u/39826728?s=460&v=4">
+    <div class="img" v-for="(imgurl,index) in section.imagesUrl" v-if="index<=3">
+      <img :src="imgurl">
     </div>
     <div class="action">
-      <span>{{id.commentNumber}}评论 · {{id.good}}赞</span>
-      <span>{{id.time}}</span>
+      <span>{{section.commentNum}}评论 · {{section.giveLikeNum}}赞</span>
+      <span>{{section.createdAt | convertTime('YYYY/MM/DD')}}</span>
     </div>
   </div>
 </template>
@@ -19,22 +17,11 @@
 <script>
   export default{
     name: 'mod-comm-list',
-    props: ['id'],
+    props: ['section'],
     data () {
       return {
       }
     },
-    created () {
-      // this.$ajax({
-      //   methods: 'get',
-      //   url: '',
-      //   data: {
-      //     'id': this.section.id
-      //   }
-      // }).then(res=>{
-      //   this.section = res.data
-      // })
-    }
   }
 </script>
 

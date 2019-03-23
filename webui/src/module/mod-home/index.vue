@@ -11,25 +11,25 @@
     <ul class="navbar">
       <li>
         <router-link to="/psycal">
-          <img src="../../../static/imgs/navbar/PsyTest.png">
+          <img src="@/assets/imgs/navbar/PsyTest.png">
           <div>心理测试</div>
         </router-link>
       </li>
       <li>
         <router-link to="/expert/list">
-          <img src="../../../static/imgs/navbar/ExpertCon.png">
+          <img src="@/assets/imgs/navbar/ExpertCon.png">
           <div>专家咨询</div>
         </router-link>
       </li>
       <li>
         <router-link to="/forum/release">
-          <img src="../../../static/imgs/navbar/Topic.png">
+          <img src="@/assets/imgs/navbar/Topic.png">
           <div>话题发布</div>
         </router-link>
       </li>
       <li>
         <router-link to="/case">
-          <img src="../../../static/imgs/navbar/CaseQuery.png">
+          <img src="@/assets/imgs/navbar/CaseQuery.png">
           <div>案例查询</div>
         </router-link>
       </li>

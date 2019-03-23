@@ -28,15 +28,12 @@
         this.$ajax({
           url: '/article',
           method: 'post',
-          header: {
-            token: this.$store.getters.getUserToken
-          },
           params: {
             content: this.copntent,
             title: this.title,
-            createAt: '',
+            createAt: new Date(),
             postId: '',
-            updateAt: '',
+            updateAt: new Date(),
             userId: this.$store.getters.getUserId
           }
         }).then(res=>{

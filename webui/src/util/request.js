@@ -5,11 +5,12 @@
 import Vue from 'vue'
 import axios from 'axios'; //引入文件
 import MintUI from 'mint-ui';
+import store from '../store';
 
 Vue.prototype.$ajax = axios; //将axios挂载到Vue实例中的$ajax上面alias
-
 // 配置公共url
-axios.defaults.baseURL = 'http://z5uo.free.idcfengye.com';
+axios.defaults.baseURL = '/api';
+axios.defaults.headers.common['token'] = store.getters.getToken;
 
 //配置请求拦截器，显示loading图标
 // axios.interceptors.request.use(config=>{

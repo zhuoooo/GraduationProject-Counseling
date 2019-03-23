@@ -6,13 +6,12 @@ const path = require('path')
 
 module.exports = {
   dev: {
-
     // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
       '/api': {
-        target: 'https://www.easy-mock.com/mock/5c39a4fb0f501e020225d6a6',  // 通过本地服务器将你的请求转发到这个地址
+        target: 'http://47.107.52.96',  // 通过本地服务器将你的请求转发到这个地址
         changeOrigin: true,  // 设置这个参数可以避免跨域
         pathRewrite: {
           '/api': '/'

@@ -26,9 +26,16 @@
       }
     },
     created(){
-      this.$ajax.get('/expert/0')
+      this.$ajax({
+        url: '/user/user/type/2',
+        method: 'get',
+        params: {
+          pageNum: 4,
+          pageSize: 1
+        },
+      })
       .then(res=>{
-        this.experts = res.data.data.experts
+        this.experts = res.data.data.list
       }).catch(err=>console.log(err))
     }
   }

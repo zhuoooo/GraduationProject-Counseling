@@ -1,0 +1,37 @@
+body{
+  margin: 0;
+  padding: 0;
+  font-family: 微软雅黑;
+  background-color: #f7f7f7;
+}
+img{
+  border: none;
+}
+a{
+  outline: none;
+  text-decoration: none;
+}
+ul{
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+p{
+  margin: 6px 0;
+}
+
+.f_l{
+  float: left;
+}
+.f_r{
+  float: right;
+}
+.clearfix:before,
+.clearfix:after{
+  content: "";
+  display: block;
+  height: 0;
+  line-height: 0;
+  visibility: hidden;
+  clear: both;
+}

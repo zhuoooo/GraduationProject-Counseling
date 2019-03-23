@@ -1,16 +1,16 @@
 <template>
   <div class="case-list">
-    <p class="title">{{id.title}}</p>
+    <p class="title">{{section.title}}</p>
     <section class="intro">
-      {{id.content}}
+      {{section.content}}
     </section>
     <div class="img">
-      <img src="https://avatars2.githubusercontent.com/u/39826728?s=460&v=4">
-      <img src="https://avatars2.githubusercontent.com/u/39826728?s=460&v=4">
-      <img src="https://avatars2.githubusercontent.com/u/39826728?s=460&v=4">
+      <!-- <img src="https://avatars2.githubusercontent.com/u/39826728?s=460&v=4"> -->
+      <!-- <img src="https://avatars2.githubusercontent.com/u/39826728?s=460&v=4"> -->
+      <!-- <img src="https://avatars2.githubusercontent.com/u/39826728?s=460&v=4"> -->
     </div>
     <div class="action">
-      <span>{{id.time}}</span>
+      <span>{{section.createAt | convertTime('YYYY/MM/DD')}}</span>
     </div>
   </div>
 </template>
@@ -18,21 +18,10 @@
 <script>
   export default{
     name: 'mod-case-list',
-    props: ['id'],
+    props: ['section'],
     data () {
       return {
       }
-    },
-    created () {
-      // this.$ajax({
-      //   methods: 'get',
-      //   url: '',
-      //   data: {
-      //     'id': this.section.id
-      //   }
-      // }).then(res=>{
-      //   this.section = res.data
-      // }).catch(err=>console.log(err))
     }
   }
 </script>

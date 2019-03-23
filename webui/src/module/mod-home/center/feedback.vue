@@ -32,9 +32,6 @@
           this.$ajax({
             url: '/feedback',
             method: 'post',
-            header: {
-              token: this.$store.getters.getUserToken
-            },
             params: {
               content: 'this.feedback',
               createAt: '',

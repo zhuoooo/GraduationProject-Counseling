@@ -23,7 +23,7 @@
     <div class="searchResult">
       <ul>
         <li v-for="result in searchResult" :key="result.id">
-          <router-link :to="{name: 'forum', query: {keywordId: result.id}}">{{ result.message }}</router-link>
+          <router-link :to="{name: this.url, query: {keywordId: result.keywordId}}">{{ result.keywordContent }}</router-link>
         </li>
       </ul>
     </div>
@@ -51,18 +51,46 @@
       },
       search(e){
         this.currentValue = e.target.value;
+        if(this.url === 'case'){
+          this.$ajax({
+            method: 'get',
+            url: '/casekeyword',
+            params: {
+              keyword: this.currentValue
+            }
+          }).then(res=>{
+            this.searchResult = res.data.data.list;
+          }).catch(err=>console.log(err))
+
+        }else{
+          this.$ajax({
+            method: 'get',
+            url: '/keyword/find',
+            params: {
+              word: this.currentValue
+            }
+          }).then(res=>{
+            this.searchResult = res.data.data.list;
+          }).catch(err=>console.log(err))
+        }
       },
       searchRecordShow(){
         console.log(this.placeholder)
       }
     },
     created() {
-      this.$ajax({
-        url: this.url,
-        method: 'get',
-      }).then(res=>{
-        this.searchResult = res.data.data
-      })
+      // if(this.url === 'case'){
+      //   this.$ajax({
+      //     url: this.url,
+      //     method: 'get',
+      //   }).then(res=>{
+      //     this.searchResult = res.data.data.list
+      //   }).catch(err=>console.log(err))
+      // }else{
+      //   this.$ajax({
+      //     url: 
+      //   })
+      // }
     }
   }
 </script>

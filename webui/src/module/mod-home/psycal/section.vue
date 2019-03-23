@@ -1,21 +1,13 @@
 <template>
   <div class="section">
-    <mt-header title="案例内容" fixed>
-      <router-link to="/case" slot="left">
+    <mt-header title="测试内容" fixed>
+      <router-link to="/psycal" slot="left">
         <mt-button icon="back"></mt-button>
       </router-link>
     </mt-header>
     <div class="section_index">
       <h1 class="title">{{section.title}}</h1>
-      <div class="info">
-        <div class="left">
-          <img src="https://avatars2.githubusercontent.com/u/39826728?s=460&v=4">
-          <div>
-            <p class="name">{{section.username}}</p>
-            <p class="post">身份标签 | {{section.createAt | convertTime('YYYY-MM-DD')}}</p>
-          </div>
-        </div>
-      </div>
+      
       <div class="section_info">
         {{section.content}}
         <!-- <img src="https://avatars2.githubusercontent.com/u/39826728?s=460&v=4"> -->
@@ -36,7 +28,7 @@
       getSection(){
         return new Promise((resolve, reject) => {
           this.$ajax({
-            url: '/case/' + this.id,
+            url: '/psychological/' + this.id,
             method: 'get'
           }).then(res=>{
             resolve(res)
@@ -47,14 +39,8 @@
     created(){
       this.getSection().then(res=>{
         this.section = res.data.data;
+        console.log(this.section)
       }, err=>console.log(err))
-      // this.$ajax({
-      //   url: '/api/case/' + this.id,
-      //   method: 'get'
-      // }).then(res=>{
-      //   console.log(res)
-      //   this.section = res.data.data;
-      // }).catch(err=>console.log(err))
     }
   }
 </script>

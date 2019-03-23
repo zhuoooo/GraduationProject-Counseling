@@ -7,8 +7,8 @@
       <div class="comment_content">
         <div class="content_info">
           <div>
-            <p class="name">第二楼楼主</p>
-            <p class="post">第二楼 | 2019-01-01</p>
+            <p class="name">{{comment.username}}</p>
+            <p class="post">第一楼 | 2019-01-01</p>
           </div>
           <div class="right" @click="love">128</div>
         </div>
@@ -35,40 +35,42 @@
     },
     created () {
       this.$ajax({
-        url: `/comment/parentId/${comment.id}`,
+        url: `/comment/parentId/3`,
+        // url: `/comment/parentId/${this.comment.id}`,
         params: {
           pageNum: this.pageNum,
           pageSize: this.pageSize
         }
       }).then(res=>{
+        console.log(res.data.data.list)
         this.otherComment = res.data
       }).catch(err=>console.log(err))
     },
     methods: {
-      // love(e){
-      //   e.currentTarget.classList.toggle('love');
-      //   if(!e.currentTarget.classList.contains('love')){
-      //     // 点赞数加一
-      //     this.$ajax({
-      //       method: 'post',
-      //       url: '/givelike/',
-      //       params: {
-      //         postId: '',
-      //         userId: ''
-      //       }
-      //     }).then(res=>{}).catch(err=>console.log(err))
-      //   }else{
-      //     // 点赞数减一
-      //     this.$ajax({
-      //       method: 'delete',
-      //       url: '/givelike/',
-      //       params: {
-      //         postId: '',
-      //         userId: ''
-      //       }
-      //     }).then(res=>{}).catch(err=>console.log(err))
-      //   }
-      // }
+      love(e){
+        e.currentTarget.classList.toggle('love');
+        if(!e.currentTarget.classList.contains('love')){
+          // 点赞数加一
+          this.$ajax({
+            method: 'post',
+            url: '/givealike/',
+            params: {
+              postId: '',
+              userId: ''
+            }
+          }).then(res=>{}).catch(err=>console.log(err))
+        }else{
+          // 点赞数减一
+          this.$ajax({
+            method: 'delete',
+            url: '/givealike/',
+            params: {
+              postId: '',
+              userId: ''
+            }
+          }).then(res=>{}).catch(err=>console.log(err))
+        }
+      }
     }
   }
 </script>

@@ -2,7 +2,7 @@
   <div class="session">
     <mt-swipe :auto="4000">
       <mt-swipe-item>
-        <img src="/static/imgs/图层2.png">
+        <img src="./imgs/top.png">
       </mt-swipe-item>
     </mt-swipe>
     <div class="session_list">
