@@ -3,8 +3,9 @@
  */
 import Vue from 'vue';
 import Vuex from 'vuex';
+import axios from 'axios';
 Vue.use(Vuex);
- 
+
 const store = new Vuex.Store({
  
   state: {
@@ -39,13 +40,16 @@ const store = new Vuex.Store({
     },
     changePwd(state, user) {
       state.password = user.password;
+    },
+    changeChar(state, char) {
+      state.charInfo = char;
     }
   },
   actions: {
     // 登录
     login(state, user) {
       let getLoginToken = new Promise((resolve, reject) => {
-        this.$ajax({
+        axios({
           url: '/user/login',
           method: 'post',
           params: {
@@ -59,7 +63,7 @@ const store = new Vuex.Store({
       });
 
       let getLoginInfo = new Promise((resolve, reject) => {
-        this.$ajax({
+        axios({
           url: `/user/${store.getters.getUserId}`,
           method: 'get',
           header: {
@@ -140,6 +144,23 @@ const store = new Vuex.Store({
             path: '/center'
           })
         });
+      }).catch(err=>console.log(err))
+    },
+
+    // 获取交流人
+    char(state){
+      this.$ajax({
+        url: `/charinfo/char/${store.getters.getUserId}`,
+        method: 'get',
+        header: {
+          token: store.getters.getToken
+        },
+        params: {
+          pageNum: 1,
+          pageSize: 10
+        }
+      }).then(res=>{
+        store.commit('changeChar', {  });
       }).catch(err=>console.log(err))
     },
   }

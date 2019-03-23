@@ -1,7 +1,8 @@
 <template>
   <div class="center">
     <div class="photo">
-      <img src="/static/imgs/userphoto.png" alt="userphoto">
+      <img src="/static/imgs/userphoto.png" alt="userphoto" @click="turnPhoto">
+      <!-- <mt-actionsheet :actions="actions" v-model="sheetVisible"></mt-actionsheet> -->
     </div>
     <div class="info">
       <ul>
@@ -63,6 +64,25 @@
         userName: this.$store.getters.getUserName,
         userPhone: this.$store.getters.getUserPhone,
         userEmail: this.$store.getters.getUserEmail,
+        // sheetVisible: false,
+        // actions: [
+        //   {
+        //     name: '拍照',
+        //     method: ()=>{
+        //       console.log("调用拍照")
+        //       plus.gallery.pick(function(e) {
+        //         let name = e.substr(e.lastIndexOf('/') + 1);
+        //         compressImage(e,name);
+        //       }, function(e) {
+        //       }, {
+        //         filter: "image"
+        //       });
+        //     }
+        //   },
+        //   {
+        //     name: '从相册中选择'
+        //   }
+        // ]
       }
     },
     methods: {
@@ -71,6 +91,9 @@
         this.$router.push({
           path: '/login'
         })
+      },
+      turnPhoto(){
+        // this.sheetVisible = true;
       }
     },
     created(){

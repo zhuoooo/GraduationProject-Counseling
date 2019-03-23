@@ -8,9 +8,9 @@
     </form>
     <mt-loadmore :auto-fill="false" :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" ref="loadmore">
       <ul>
-        <li v-for="section in sections" :key="section.id">
-          <router-link :to="{path: '/case/section', query: {id: section.id}}">
-            <mod-case-list :id="section"></mod-case-list>
+        <li v-for="section in sections" :key="section.psychologicalCaseId">
+          <router-link :to="{path: '/case/section', query: {id: section.psychologicalCaseId}}">
+            <mod-case-list :section="section"></mod-case-list>
           </router-link>
         </li>
       </ul>
@@ -22,16 +22,7 @@
   export default{
     data(){
       return{
-        sections: [
-          {
-            'id': 2,
-            'title': '标题1',
-            'content': '焦虑焦虑焦虑焦虑焦虑焦虑焦虑焦虑焦虑焦虑焦虑焦虑焦虑焦虑焦虑焦虑焦虑焦虑焦虑焦虑',
-            'commentNumber': 120,
-            'good': 12,
-            'time': '2018/01/02',
-          }
-        ],
+        sections: [],
         pageNum: 1,
         pageSize: 10,
         allLoaded: false,
@@ -55,7 +46,7 @@
         this.$refs.loadmore.onBottomLoaded();
       },
       pageLoad(pageNum, pageSize){
-        if(!this.$route.query.keyword){
+        if(!this.$route.query.keywordId){
           if(!this.$store.getters.getUserToken){
             // 未登录
             this.$ajax({
@@ -66,12 +57,12 @@
                 pageSize: this.pageSize
               }
             }).then(res=>{
-              if(res.data.message.length === 0){
+              this.sections = this.sections.concat(res.data.data.list);
+              if(!res.data.data.hasNextPage){
                 this.$toast('没有更多数据');
                 this.allLoaded = true;
               }
               this.pageNum++;
-              // this.sections = 
             }).catch(err=>console.log(err))
           }else{
             // 登录
@@ -83,7 +74,7 @@
                 pageSize: this.pageSize
               }
             }).then(res=>{
-              if(res.data.message.length === 0){
+              if(!res.data.data.hasNextPage){
                 this.$toast('没有更多数据');
                 this.allLoaded = true;
               }
@@ -100,7 +91,7 @@
               pageSize: this.pageSize
             }
           }).then(res=>{
-            if(res.data.message.length === 0){
+            if(!res.data.data.hasNextPage){
               this.$toast('没有更多数据');
               this.allLoaded = true;
             }
@@ -110,7 +101,7 @@
       },
     },
     created(){
-      // this.pageLoad(this.pageNum, this.pageSize)
+      this.pageLoad(this.pageNum, this.pageSize)
     },
   }
 </script>

@@ -5,6 +5,7 @@ const Login = () => import('@/module/mod-home/login/login')
 const Register = () => import('@/module/mod-home/login/register')
 const EleLogin = () => import('@/module/mod-home/login/eleLogin')
 const Psylist = () => import('@/module/mod-home/psycal/psylist')
+const PsySection = () => import('@/module/mod-home/psycal/section')
 const Case = () => import('@/module/mod-home/case/index')
 const CaseSection = () => import('@/module/mod-home/case/section')
 const ExpertList = () => import('@/module/mod-home/expert/expertList')
@@ -74,6 +75,11 @@ export default new Router({
       path: '/psycal',
       name: 'psycal',
       component: Psylist
+    },
+    {
+      path: '/psycal/section',
+      name: 'psycalsection',
+      component: PsySection
     },
 
     /**

@@ -6,32 +6,32 @@
       </router-link>
     </mt-header>
     <div class="section_index">
-      <h1 class="title">fd</h1>
+      <h1 class="title">{{section.title}}</h1>
       <div class="info">
         <div class="left">
           <img src="https://avatars2.githubusercontent.com/u/39826728?s=460&v=4">
           <div>
-            <p class="name">用户名</p>
-            <p class="post">身份标签 | 2019-01-01</p>
+            <p class="name">{{section.userName}}</p>
+            <p class="post">身份标签 | {{section.createAt | convertTime('YYYY-MM-DD')}}</p>
           </div>
         </div>
       </div>
       <div class="section_info">
-        fdafdafdsfffffffffffffffffffffffffffffffffffffffffffffffffff夫
-        <img src="https://avatars2.githubusercontent.com/u/39826728?s=460&v=4">
+        {{section.content}}
       </div>
       <div class="giveLove">
-        <div class="right" @click="love">128</div>
+        <div class="right" @click="love">{{section.giveLikeNum}}</div>
       </div>
     </div>
 
     <div class="section_comment">
       <h1>全部评论</h1>
-      <div v-for="comment in comments">
-        <mod-comment :comment="comment"></mod-comment>
+      <div v-if="comments.length>0">
+        <div v-for="comment in comments">
+          <mod-comment :comment="comment"></mod-comment>
+        </div>
       </div>
-        <mod-comment :comment="comment"></mod-comment>
-        <mod-comment :comment="comment"></mod-comment>
+      <div class="noComment" v-else>暂无评论</div>
     </div>
 
     <div class="section_send_comment">
@@ -47,14 +47,10 @@
     data(){
       return {
         id: this.$route.query.id,
-        section: {
-          'id': 2,
-          'userName': '张三',
-          'title': 'title'
-        },
+        section: {},
         comments: [],
         pageNum: 1,
-        pageSize: 8,
+        pageSize: 5,
         commentContent: ''
       }
     },
@@ -63,7 +59,7 @@
         url: `/article/${this.id}`,
         method: 'get'
       }).then(res=>{
-        this.section = res.data
+        this.section = res.data.data
       }).catch(err=>console.log(err))
 
       // 获取评论
@@ -74,7 +70,8 @@
           pageSize: this.pageSize
         }
       }).then(res=>{
-        this.comments = res.data;
+        console.log(res.data.data)
+        this.comments = res.data.data.list;
       }).catch(err=>console.log(err))
     },
     methods: {
@@ -85,21 +82,28 @@
           params: {
             commentContent: this.commentContent,
             commentsId: 1,
-            createAt: new Date(Date.now()).toLocaleDateString(),
-            parentId: 1,
-            postId: 1,
-            updateAt: new Date(Date.now()).toLocaleDateString(),
-            userId: 1
+            createAt: Date.now(),
+            parentId: 0,
+            postId: this.id,
+            updateAt: Date.now(),
+            userId: this.$store.getters.getUserId()
+          },
+          header: {
+            token: this.$store.getters.getToken()
           }
         }).then(res=>{}).catch(err=>console.log(err))
       },
       love(e){
+        if(!this.$store.getters.getUserToken){
+          this.$toast('请先登录....');
+          return;
+        }
         e.currentTarget.classList.toggle('love');
-        if(!e.currentTarget.classList.contains('love')){
+        if(e.currentTarget.classList.contains('love')){
           // 点赞数加一
           this.$ajax({
             method: 'post',
-            url: '/givelike/',
+            url: '/givealike/',
             params: {
               postId: this.id,
               userId: this.$store.getters.getUserId
@@ -112,7 +116,7 @@
           // 点赞数减一
           this.$ajax({
             method: 'delete',
-            url: '/givelike/',
+            url: '/givealike/',
             params: {
               postId: this.id,
               userId: this.$store.getters.getUserId
@@ -184,7 +188,8 @@
     top: 2px;
     content: '';
     width: 14px;
-    left: -80%;
+    left: 0;
+    transform: translate(-130%);
     height: 16px;
     display: block;
     position: absolute;
@@ -217,11 +222,14 @@
     font-size: 1rem;
     font-weight: 400;
   }
+  .section .section_comment .noComment{
+    text-align: center;
+    padding: 0 0 15px;
+  }
   .section_send_comment{
     position: fixed;
     bottom: 0;
     width: 100%;
-
   }
   .section_send_comment >>> .mint-cell-wrapper{
     /* font-size: 1.1rem; */

@@ -3,14 +3,14 @@
     <form class="search" onsubmit="return false;">
       <input type="search" name="search" placeholder="请输入关键词搜索话题" @focus="search">
       <button @click="release">
-        <img src="../../../../static/imgs/write.png">
+        <img src="/static/imgs/write.png">
       </button>
     </form>
     <mt-loadmore :auto-fill="false" :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" ref="loadmore">
       <ul>
         <li v-for="section in sections" :key="section.id">
-          <router-link :to="{path: '/forum/section', query: {id: section.id}}">
-            <mod-comm-list :id="section"></mod-comm-list>
+          <router-link :to="{path: '/forum/section', query: {id: section.postId}}">
+            <mod-comm-list :section="section"></mod-comm-list>
           </router-link>
         </li>
       </ul>
@@ -22,37 +22,14 @@
   export default{
     data(){
       return{
-        sections: [
-          {
-            'id': 2,
-            'title': '标题1',
-            'content': '焦虑焦虑焦虑焦虑焦虑焦虑焦虑焦虑焦虑焦虑焦虑焦虑焦虑焦虑焦虑焦虑焦虑焦虑焦虑焦虑',
-            'commentNumber': 120,
-            'good': 12,
-            'time': '2018/01/02',
-          },{
-            'id': 21,
-            'title': '标题1',
-            'content': '焦虑焦虑焦虑焦虑焦虑焦虑焦虑焦虑焦虑焦虑焦虑焦虑焦虑焦虑焦虑焦虑焦虑焦虑焦虑焦虑',
-            'commentNumber': 120,
-            'good': 12,
-            'time': '2018/01/02',
-          },{
-            'id': 211,
-            'title': '标题1',
-            'content': '焦虑焦虑焦虑焦虑焦虑焦虑焦虑焦虑焦虑焦虑焦虑焦虑焦虑焦虑焦虑焦虑焦虑焦虑焦虑焦虑',
-            'commentNumber': 120,
-            'good': 12,
-            'time': '2018/01/02',
-          }
-        ],
+        sections: [],
         allLoaded: false,
         pageNum: 1,
         pageSize: 10
       }
     },
     created(){
-      // this.pageLoad(this.pageNum, this.pageSize)
+      this.pageLoad(this.pageNum, this.pageSize)
     },
     methods: {
       search(){
@@ -75,7 +52,8 @@
             pageSize: pageSize
           }
         }).then(res=>{
-          if(res.data.message.length === 0){
+          this.sections = this.sections.concat(res.data.data.list);
+          if(!res.data.data.hasNextPage){
             this.$toast('没有更多数据');
             this.allLoaded = true;
           }

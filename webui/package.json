@@ -13,6 +13,7 @@
     "axios": "^0.18.0",
     "element-ui": "^2.4.11",
     "mint-ui": "^2.2.13",
+    "moment": "^2.24.0",
     "sockjs-client": "^1.3.0",
     "stompjs": "^2.3.3",
     "vue": "^2.5.21",

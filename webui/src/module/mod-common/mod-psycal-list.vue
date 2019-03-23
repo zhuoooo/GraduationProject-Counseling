@@ -1,13 +1,13 @@
 <template>
   <li>
-    <router-link to="/">
+    <router-link :to="{name: 'psycalsection', query: {id: psycal.psychologicalId}}">
       <div>
         <img src="https://avatars2.githubusercontent.com/u/39826728?s=460&v=4">
       </div>
       <div>
-        <h1>心理测试</h1>
+        <h1>{{psycal.title}}</h1>
         <div class="intro">
-          简单介绍简单介绍简单介绍简单介绍简单介绍简单介绍简单介绍简单介绍简单介绍简单介绍简单介绍简单介绍简单介绍简单介绍简单介绍简单介绍简单介绍简单介绍简单介绍简单介绍简单介绍简单介绍简单介绍简单介绍简单介绍简单介绍简单介绍简单介绍简单介绍简单介绍简单介绍
+          暂无介绍
         </div>
       </div>
     </router-link>
@@ -17,6 +17,7 @@
 <script>
   export default{
     name: 'mod-psycal-list',
+    props: ['psycal'],
   }
 </script>
 
@@ -26,8 +27,9 @@
     background-color: #fbfbfb;
   }
   li a{
-    display: flex;
     color: #000;
+    display: flex;
+    align-items: center;
   }
   li a img{
     width: 80px;
@@ -37,8 +39,12 @@
     font-size: 1rem;
   }
   li a .intro{
-    font-size: 0.8rem;
+    color: #666;
     overflow: hidden;
+    line-height: 1.5;
+    margin: 0 0 5px;
+    padding: 5px;
+    font-size: 0.8rem;
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 3;

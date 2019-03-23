@@ -34,20 +34,27 @@ Vue.component(MyPsylist.name, MyPsylist)
 Vue.component(MyCaseList.name, MyCaseList)
 
 // 路由守卫
-// router.beforeEach((to, from, next)=>{
-//   if(to.matched.some(req => req.meta.requireLogin)){
-//     if(!store.getters.getToken){
-//       MintUI.Toast('请先登录...');
-//       next({
-//         path: '/login'
-//       })
-//     }else{
-//       next()
-//     }
-//   }else{
-//     next()
-//   }
-// })
+router.beforeEach((to, from, next)=>{
+  if(to.matched.some(req => req.meta.requireLogin)){
+    if(!store.getters.getToken){
+      MintUI.Toast('请先登录...');
+      next({
+        path: '/login'
+      })
+    }else{
+      next()
+    }
+  }else{
+    next()
+  }
+})
+
+import Moment from 'moment'
+Vue.filter('convertTime', (data, formatStr)=>{
+  return Moment(data).format(formatStr);
+})
+// Moment.locale('zh-cn')
+
 
 Vue.config.productionTip = false
 
