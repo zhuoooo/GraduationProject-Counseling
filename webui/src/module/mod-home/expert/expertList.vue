@@ -33,9 +33,6 @@
           pageNum: 4,
           pageSize: 1
         },
-        header: {
-          token: this.$store.getters.getToken
-        }
       })
       .then(res=>{
         this.experts = res.data.data.list

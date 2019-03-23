@@ -3,7 +3,7 @@
     <form class="search" onsubmit="return false;">
       <input type="search" name="search" placeholder="请输入关键词搜索话题" @focus="search">
       <button @click="release">
-        <img src="/static/imgs/write.png">
+        <img src="./imgs/write.png">
       </button>
     </form>
     <mt-loadmore :auto-fill="false" :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" ref="loadmore">

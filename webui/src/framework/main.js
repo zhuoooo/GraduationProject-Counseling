@@ -7,7 +7,7 @@ import store from '@/store/index'
 import ElementUI from 'element-ui'
 import 'util/request'
 import 'util/bus'
-import '../../static/css/base.css'
+import '../assets/css/base.css'
 
 Vue.use(ElementUI)
 

@@ -28,9 +28,6 @@
         this.$ajax({
           url: '/article',
           method: 'post',
-          header: {
-            token: this.$store.getters.getUserToken
-          },
           params: {
             content: this.copntent,
             title: this.title,

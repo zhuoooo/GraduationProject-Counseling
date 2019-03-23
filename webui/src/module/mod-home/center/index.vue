@@ -1,7 +1,7 @@
 <template>
   <div class="center">
     <div class="photo">
-      <img src="/static/imgs/userphoto.png" alt="userphoto" @click="turnPhoto">
+      <img src="./imgs/userphoto.png" alt="userphoto" @click="turnPhoto">
       <!-- <mt-actionsheet :actions="actions" v-model="sheetVisible"></mt-actionsheet> -->
     </div>
     <div class="info">
