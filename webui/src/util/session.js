@@ -28,7 +28,7 @@ class session {
   }
   connection() {
     // 建立连接对象
-    let socket = new SockJS('http://z5uo.free.idcfengye.com/v2/api-docs?group=psychology');
+    let socket = new SockJS('api/charinfo');
     this.stompClient = Stomp.over(socket);
     let headers = {
       name: ''

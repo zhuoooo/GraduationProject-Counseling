@@ -4,11 +4,6 @@
       <router-link to="/session" slot="left">
         <mt-button icon="back"></mt-button>
       </router-link>
-      <router-link to="/session" slot="right">
-        <mt-button>
-          <img src="/static/imgs/tabbar/unCenter.png">
-        </mt-button>
-      </router-link>
     </mt-header>
 
     <div class="dialogue_index">

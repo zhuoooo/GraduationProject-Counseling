@@ -29,11 +29,11 @@
           url: '/article',
           method: 'post',
           params: {
-            content: this.copntent,
+            content: this.content,
             title: this.title,
-            createAt: new Date(),
-            postId: '',
-            updateAt: new Date(),
+            createAt: new Date().getTime(),
+            postId: this.$store.getters.getUserId,
+            updateAt: new Date().getTime(),
             userId: this.$store.getters.getUserId
           }
         }).then(res=>{

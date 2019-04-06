@@ -15,6 +15,8 @@ const store = new Vuex.Store({
     userPhone: '',
     userEmail: '',
     password: '',
+    createAt: '',
+    role: '',
     charInfo: [],
     token: localStorage.getItem('token') ? localStorage.getItem('token') : '',
   },
@@ -26,6 +28,8 @@ const store = new Vuex.Store({
     getCharInfo: state => state.charInfo,
     getUserId: state => state.userId,
     getUserPwd: state => state.password,
+    getUserCta: state => state.createAt,
+    getUserRole: state => state.role,
   },
   mutations: {
     changeLogin(state, user) {
@@ -38,6 +42,8 @@ const store = new Vuex.Store({
       state.userName = user.userName;
       state.userPhone = user.userPhone;
       state.userEmail = user.userEmail;
+      state.createAt = user.createAt;
+      state.role = user.role;
     },
     changePwd(state, user) {
       state.password = user.password;
@@ -58,29 +64,16 @@ const store = new Vuex.Store({
             password: user.password
           }
         }).then(res=>{
-          resolve(res.data)
+          resolve(res.data.data)
+          store.commit('changePwd', { password: user.password});
           // store.commit('changeLogin', { token: res.data.token, userId: res.data.userId });
         }).catch(err=>console.log(err))
       });
 
-      let getLoginInfo = new Promise((resolve, reject) => {
-        axios({
-          url: `/user/${store.getters.getUserId}`,
-          method: 'get',
-          header: {
-            token: store.getters.getToken,
-          }
-        }).then(res=>{
-          resolve(res.data)
-        }).catch(err=>console.log(err))
-      })
-
       getLoginToken.then(data=>{
         console.log(data)
         store.commit('changeLogin', { token: data.token, userId: data.userId });
-        return getLoginInfo;
-      }).then(data=>{
-        store.commit('changeInfo', { userName: data.userName, userEmail: data.userEmail, userPhone: data.userPhone });
+        store.commit('changeInfo', { userName: data.username, userEmail: data.email, userPhone: data.phone, createAt: data.createAt, role: data.role });
       }).catch(err=>console.log(err))
     },
 
@@ -101,7 +94,7 @@ const store = new Vuex.Store({
           store.commit('changeLogin', { token: res.data.token, userId: res.data.userId });
           Vue.$toast('注册成功');
           router.push({
-            path: '/home'
+            path: '/login'
           })
         }else{
           alert(res.data.msg);
@@ -112,17 +105,17 @@ const store = new Vuex.Store({
 
     // 修改信息
     revise(state, user) {
-      this.$ajax({
+      axios({
         url: `/user/${store.getters.getUserId}`,
         method: 'put',
         params: {
-          createAt: '',
+          createAt: store.getters.getUserCta,
           email: user.email,
           headUrl: user.headUrl,
           password: user.password,
           phone: user.phone,
-          role: '',
-          updateAt: '',
+          role: store.getters.getUserRole,
+          updateAt: new Date().getTime(),
           username: user.userName,
         },
         header: {
@@ -130,8 +123,8 @@ const store = new Vuex.Store({
         }
       }).then(res=>{
         store.commit('changeInfo', {})
-        this.$messagebox.alert('修改成功').then(action => {
-          this.$router.push({
+        Vue.$messagebox.alert('修改成功').then(action => {
+          router.push({
             path: '/center'
           })
         });
@@ -140,7 +133,7 @@ const store = new Vuex.Store({
 
     // 修改密码
     resetPwd(state, user) {
-      this.$ajax({
+      axios({
         url: `/user/reset/${store.getters.getUserId}`,
         method: 'put',
         header: {
@@ -151,8 +144,8 @@ const store = new Vuex.Store({
         }
       }).then(res=>{
         store.commit('changePwd', { password: user.password});
-        this.$messagebox.alert('修改成功').then(action => {
-          this.$router.push({
+        Vue.$messagebox.alert('修改成功').then(action => {
+          router.push({
             path: '/center'
           })
         });
@@ -161,7 +154,7 @@ const store = new Vuex.Store({
 
     // 获取交流人
     char(state){
-      this.$ajax({
+      axios({
         url: `/charinfo/char/${store.getters.getUserId}`,
         method: 'get',
         header: {

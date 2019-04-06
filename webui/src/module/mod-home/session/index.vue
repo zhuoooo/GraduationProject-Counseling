@@ -40,7 +40,11 @@
       }
     },
     created() {
-      // this.sessions = this.$store.getters.getCharInfo;
+      this.$ajax({
+        // url: `charinfo/char/${this.$store.getters.getUserId}`,
+        
+      })
+      this.sessions = this.$store.getters.getCharInfo;
     }
   }
 </script>

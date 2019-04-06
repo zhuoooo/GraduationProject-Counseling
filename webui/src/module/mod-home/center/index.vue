@@ -97,15 +97,7 @@
       }
     },
     created(){
-      // this.$ajax({
-      //   methods: 'post',
-      //   url: '/userInfo',
-      //   data: {
-      //     userName: this.userName
-      //   }
-      // }).then((res)=>{
-      //   this.userInfo = res.data
-      // }).catch(err=>console.log(err))
+      console.log(this.$store.getters.getUserPhone)
     }
 
   }
