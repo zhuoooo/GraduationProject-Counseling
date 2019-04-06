@@ -31,11 +31,7 @@
           this.$toast('请输入完整信息');
           return
         }
-        this.$store.dispatch('login', { username: this.username, password: this.password, email: this.email, phone: this.phone });
-        this.$toast('注册成功');
-        this.$router.push({
-          path: '/home'
-        })
+        this.$store.dispatch('register', { username: this.username, password: this.password, email: this.email, phone: this.phone });
       }
     },
     mounted() {

@@ -4,6 +4,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import axios from 'axios';
+import router from '../router/index'
 Vue.use(Vuex);
 
 const store = new Vuex.Store({
@@ -75,6 +76,7 @@ const store = new Vuex.Store({
       })
 
       getLoginToken.then(data=>{
+        console.log(data)
         store.commit('changeLogin', { token: data.token, userId: data.userId });
         return getLoginInfo;
       }).then(data=>{
@@ -84,7 +86,7 @@ const store = new Vuex.Store({
 
     // 注册
     register(state, user) {
-      this.$ajax({
+      axios({
         url: '/user/add',
         method: 'post',
         params: {
@@ -94,7 +96,17 @@ const store = new Vuex.Store({
           username: user.username
         }
       }).then(res=>{
-        store.commit('changeLogin', { token: res.data.token, userId: res.data.userId });
+        console.log(res)
+        if(res.data.status == 200){
+          store.commit('changeLogin', { token: res.data.token, userId: res.data.userId });
+          Vue.$toast('注册成功');
+          router.push({
+            path: '/home'
+          })
+        }else{
+          alert(res.data.msg);
+          return;
+        }
       }).catch(err=>console.log(err))
     },
 
