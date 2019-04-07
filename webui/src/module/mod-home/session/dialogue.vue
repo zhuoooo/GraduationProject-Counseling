@@ -93,48 +93,42 @@
     },
     methods: {
       send(){
-        // this.$ajax({
-        //   method: 'post',
-        //   url: 'charinfo',
-        //   params: {
-        //     chatContent: this.introduction,
-        //     chatinfoId: ,
-        //     createAt: ,
-        //     status: '',
-        //     theReceiveId: '',
-        //     theSenderId: '',
-        //     updateAt: ''
-        //   }
-        // }).then(res=>{
-
-        // }).catch(err=>console.log(err))
+        this.$ajax({
+          method: 'post',
+          url: 'charinfo',
+          params: {
+            chatContent: this.introduction,
+            chatinfoId: this.$store.getters.getUserId,
+            createAt: new Date().getTime(),
+            status: 200,
+            theReceiveId: this.$route.params.theReceiveId,
+            theSenderId: this.$route.params.theSenderId,
+            updateAt: new Date().getTime()
+          }
+        }).then(res=>{
+          console.log(res)
+        }).catch(err=>console.log(err))
       },
       loadTop(){
         this.pageLoad(this.pageNum, this.pageSize)
         this.$refs.loadmore.onTopLoaded();
       },
       pageLoad(pageNum, pageSize){
-        let userid = window.localStorage.getItem('user');
-        if(!userid){
-          // 未登录
-          this.$router.push('/login')
-        }else{
-          // 登录
-          this.$ajax({
-            method: 'get',
-            url: `/charinfo/info/${this.theSenderId}/${this.theReceiveId}`,
-            params: {
-              pageNum: this.pageNum,
-              pageSize: this.pageSize
-            }
-          }).then(res=>{
-            if(res.data.message.length === 0){
-              this.$toast('没有更多数据');
-              this.allLoaded = true;
-            }
-            this.pageNum++;
-          }).catch(err=>console.log(err))
-        }
+        this.$ajax({
+          method: 'get',
+          url: `/charinfo/info/${this.theSenderId}/${this.theReceiveId}`,
+          params: {
+            pageNum: this.pageNum,
+            pageSize: this.pageSize
+          }
+        }).then(res=>{
+          console.log(res)
+          if(!res.data.data.hasNextPage){
+            this.$toast('没有更多数据');
+            this.allLoaded = true;
+          }
+          this.pageNum++;
+        }).catch(err=>console.log(err))
       },
     },
     mounted() {

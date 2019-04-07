@@ -8,7 +8,7 @@
     <div class="session_list">
       <ul>
         <li v-for="session in sessions" :key="session.id">
-          <router-link :to="{ name: 'dialogue', params: { theSenderId: 1, theReceiveId: 1 }}" class="router">
+          <router-link :to="{ name: 'dialogue', params: { theSenderId: 133, theReceiveId: 132 }}" class="router">
             <img :src="session.img">
             <div>
               <p class="info">
@@ -37,14 +37,23 @@
             'content': '不用担心，我没有什么烦心事心么烦心事心么烦心事心事心'
           }
         ],
+        pageSize: 8,
+        pageNum: 1,
       }
     },
     created() {
       this.$ajax({
-        // url: `charinfo/char/${this.$store.getters.getUserId}`,
-        
+        url: `charinfo/char/${this.$store.getters.getUserId}`,
+        method: 'get',
+        params: {
+          pageNum: this.pageNum,
+          pageSize: this.pageSize
+        }
+      }).then(res=>{
+        // this.sessions = res.data.data.list;
+        console.log(res)
       })
-      this.sessions = this.$store.getters.getCharInfo;
+        // this.sessions = this.$store.getters.getCharInfo;
     }
   }
 </script>

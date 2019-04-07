@@ -11,7 +11,7 @@ class session {
     this.timer = '';
     this.data = [];
 
-    initWebSocket()
+    this.initWebSocket()
   }
   initWebSocket() {
     this.connection();
@@ -28,10 +28,10 @@ class session {
   }
   connection() {
     // 建立连接对象
-    let socket = new SockJS('api/charinfo');
+    let socket = new SockJS('/api/charinfo');
     this.stompClient = Stomp.over(socket);
     let headers = {
-      name: ''
+      // name: ''
     }
     // 向服务器发起websocket连接
     this.stompClient.connect(headers,() => {

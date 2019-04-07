@@ -99,7 +99,6 @@ export default {
       }else{
         this.lastTime = new Date().getTime();
       }
-      console.log(this.clickTime)
     },
   },
   watch: {
@@ -126,6 +125,9 @@ export default {
   },
   created() {
     this.lastTime = new Date().getTime();
+
+    // new chat();
+    console.log(chat)
   }
 }
 </script>
