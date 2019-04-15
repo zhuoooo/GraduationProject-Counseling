@@ -5,13 +5,15 @@
       <router-link to="/home" slot="left">
         <mt-button icon="back"></mt-button>
       </router-link>
+      <mt-button slot="right" @click="answer">答案</mt-button>
     </mt-header>
     <div class="psylist">
       <mt-loadmore :auto-fill="false" :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" ref="loadmore">
-        <ul v-for="psycal in psycalList">
-          <mod-psycal-list :psycal="psycal"></mod-psycal-list>
+        <ul v-for="psycal in psycalList" :key="psycal.psychologicalId">
+          <mod-psycal-list :psycal="psycal" :isShow="isShow"></mod-psycal-list>
         </ul>
       </mt-loadmore>
+
     </div>
   </div>
 </template>
@@ -26,6 +28,12 @@
     font-size: 0.9rem;
     background-color: #fbfbfb;
   }
+  div >>> .mint-header-button.is-right button{
+    background-color: #1c9bfc;
+    color: #fff;
+    padding: 0 13px;
+    height: 28px;
+  }
 </style>
 
 <script>
@@ -35,7 +43,8 @@
         psycalList: [],
         allLoaded: false,
         pageNum: 1,
-        pageSize: 5
+        pageSize: 5,
+        isShow: false
       }
     },
     methods: {
@@ -61,6 +70,9 @@
         this.pageLoad(this.pageNum, this.pageSize)
         console.log('上拉被执行')
         this.$refs.loadmore.onBottomLoaded();
+      },
+      answer() {
+        this.isShow = this.isShow?false:true;
       }
     },
     created(){

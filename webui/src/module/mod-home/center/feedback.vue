@@ -34,10 +34,10 @@
             method: 'post',
             params: {
               content: this.feedback,
-              createAt: new Date().getTime(),
-              feedbackId: this.$store.getters.getUserId,
-              status: '',
-              updateAt: new Date().getTime(),
+              // createAt: new Date().getTime(),
+              // feedbackId: this.$store.getters.getUserId,
+              // status: 200,
+              // updateAt: new Date().getTime(),
               userId: this.$store.getters.getUserId
             }
           }).then(res=>{

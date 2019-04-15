@@ -12,7 +12,7 @@
           </div>
           <div class="right" @click="love">128</div>
         </div>
-        <div class="content_user">给对方是否觉得萨里看风景的上课了房间里</div>
+        <div class="content_user" :data-parentid="1" @click.stop="getCommitId">给对方是否觉得萨里看风景的上课了房间里</div>
         <div class="content_other">
           <router-link to="">楼中楼第一楼：</router-link>
           <span>1111111111111111111111111111111111111111111111111111111111</span>
@@ -70,6 +70,10 @@
             }
           }).then(res=>{}).catch(err=>console.log(err))
         }
+      },
+      // 获取发送评论为几级父类
+      getCommitId(e) {
+        this.$emit('getCommitId', e.currentTarget.dataset.parentid)
       }
     }
   }

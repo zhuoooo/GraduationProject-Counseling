@@ -31,9 +31,9 @@
           params: {
             content: this.content,
             title: this.title,
-            createAt: new Date().getTime(),
-            postId: this.$store.getters.getUserId,
-            updateAt: new Date().getTime(),
+            // createAt: new Date().getTime(),
+            // postId: this.$store.getters.getUserId,
+            // updateAt: new Date().getTime(),
             userId: this.$store.getters.getUserId
           }
         }).then(res=>{

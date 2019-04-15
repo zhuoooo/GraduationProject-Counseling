@@ -22,8 +22,8 @@
     </div>
     <div class="searchResult">
       <ul>
-        <li v-for="result in searchResult" :key="result.id">
-          <router-link :to="{name: this.url, query: {keywordId: result.keywordId}}">{{ result.keywordContent }}</router-link>
+        <li v-for="(result,index) in searchResult" :key="index">
+          <router-link :to="{name: result.url, query: {keywordId: result.keywordId}}">{{ result.keywordContent }}</router-link>
         </li>
       </ul>
     </div>
@@ -59,6 +59,7 @@
               keyword: this.currentValue
             }
           }).then(res=>{
+            console.log(1)
             this.searchResult = res.data.data.list;
           }).catch(err=>console.log(err))
 
@@ -70,6 +71,7 @@
               word: this.currentValue
             }
           }).then(res=>{
+            console.log(res)
             this.searchResult = res.data.data.list;
           }).catch(err=>console.log(err))
         }

@@ -71,9 +71,17 @@ const store = new Vuex.Store({
       });
 
       getLoginToken.then(data=>{
-        console.log(data)
-        store.commit('changeLogin', { token: data.token, userId: data.userId });
-        store.commit('changeInfo', { userName: data.username, userEmail: data.email, userPhone: data.phone, createAt: data.createAt, role: data.role });
+        console.log(!data)
+        if(!!data){
+          store.commit('changeLogin', { token: data.token, userId: data.userId });
+          store.commit('changeInfo', { userName: data.username, userEmail: data.email, userPhone: data.phone, createAt: data.createAt, role: data.role });
+          router.push({
+            path: '/home'
+          })
+        }else{
+          Vue.$toast('账号或密码错误');
+          return
+        }
       }).catch(err=>console.log(err))
     },
 

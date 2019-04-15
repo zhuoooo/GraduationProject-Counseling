@@ -126,7 +126,7 @@ export default {
   created() {
     this.lastTime = new Date().getTime();
 
-    // new chat();
+    // new chat('/api');
     console.log(chat)
   }
 }

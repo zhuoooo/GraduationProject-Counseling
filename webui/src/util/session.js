@@ -3,13 +3,14 @@
  */
 import SockJS from 'sockjs-client'
 import Stomp from 'stompjs'
+import store from '../store/index'
 
 class session {
   constructor (src) {
     this.src = src;
     this.stompClient = '';
     this.timer = '';
-    this.data = [];
+    this.data = [];  //获取收到的信息
 
     this.initWebSocket()
   }
@@ -28,19 +29,19 @@ class session {
   }
   connection() {
     // 建立连接对象
-    let socket = new SockJS('/api/charinfo');
+    let socket = new SockJS(this.src);
     this.stompClient = Stomp.over(socket);
     let headers = {
-      // name: ''
+      token: store.getters.getToken
     }
     // 向服务器发起websocket连接
     this.stompClient.connect(headers,() => {
-      this.stompClient.subscribe(this.src, (msg) => {
+      this.stompClient.subscribe('/charinfo', (msg) => {
         console.log(msg.body);
         this.data = msg.body;
       });
     }, err => {
-      console.log(err);
+      console.log('err:' + err);
     });
   }
   disconnect() {

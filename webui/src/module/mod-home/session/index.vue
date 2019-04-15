@@ -25,6 +25,7 @@
 </template>
 
 <script>
+  import chat from 'util/session.js'
   export default{
     data(){
       return {
@@ -42,18 +43,19 @@
       }
     },
     created() {
-      this.$ajax({
-        url: `charinfo/char/${this.$store.getters.getUserId}`,
-        method: 'get',
-        params: {
-          pageNum: this.pageNum,
-          pageSize: this.pageSize
-        }
-      }).then(res=>{
-        // this.sessions = res.data.data.list;
-        console.log(res)
-      })
+      // this.$ajax({
+      //   url: `charinfo/char/${this.$store.getters.getUserId}`,
+      //   method: 'get',
+      //   params: {
+      //     pageNum: this.pageNum,
+      //     pageSize: this.pageSize
+      //   }
+      // }).then(res=>{
+      //   // this.sessions = res.data.data.list;
+      //   console.log(res)
+      // })
         // this.sessions = this.$store.getters.getCharInfo;
+      // new chat();
     }
   }
 </script>
