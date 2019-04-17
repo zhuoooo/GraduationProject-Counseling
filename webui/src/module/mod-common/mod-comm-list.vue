@@ -4,8 +4,8 @@
     <section class="intro">
       {{section.content}}
     </section>
-    <div class="img" v-for="(imgurl,index) in section.imagesUrl" v-if="index<=3">
-      <img :src="imgurl">
+    <div class="img" v-for="(imgurl,index) in section.imagesUrl" :key="index">
+      <img :src="imgurl" v-if="index < 3">
     </div>
     <div class="action">
       <span>{{section.commentNum}}评论 · {{section.giveLikeNum}}赞</span>

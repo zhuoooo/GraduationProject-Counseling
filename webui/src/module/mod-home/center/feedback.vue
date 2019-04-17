@@ -10,7 +10,7 @@
     </mt-header>
 
     <div class="revise_choose">
-      <mt-field type="password" v-model="feedback" placeholder="请输入反馈内容"></mt-field>
+      <mt-field type="text" v-model="feedback" placeholder="请输入反馈内容"></mt-field>
     </div>
   </div>
 </template>
@@ -33,11 +33,11 @@
             url: '/feedback',
             method: 'post',
             params: {
-              content: 'this.feedback',
-              createAt: '',
-              feedbackId: '',
-              status: '',
-              updateAt: '',
+              content: this.feedback,
+              // createAt: new Date().getTime(),
+              // feedbackId: this.$store.getters.getUserId,
+              // status: 200,
+              // updateAt: new Date().getTime(),
               userId: this.$store.getters.getUserId
             }
           }).then(res=>{

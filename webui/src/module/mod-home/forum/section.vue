@@ -1,5 +1,5 @@
 <template>
-  <div class="section">
+  <div class="section" @click="getPageId">
     <mt-header title="帖子内容" fixed>
       <router-link to="/forum" slot="left">
         <mt-button icon="back"></mt-button>
@@ -20,23 +20,25 @@
         {{section.content}}
       </div>
       <div class="giveLove">
-        <div class="right" @click="love">{{section.giveLikeNum}}</div>
+        <div class="right" @click="love">{{giveLoveNum}}</div>
       </div>
     </div>
 
     <div class="section_comment">
       <h1>全部评论</h1>
       <div v-if="comments.length>0">
-        <div v-for="comment in comments">
+        <div v-for="(comment,index) in comments" :key="index">
           <mod-comment :comment="comment"></mod-comment>
         </div>
       </div>
       <div class="noComment" v-else>暂无评论</div>
+      <mod-comment :comment="comment" @getCommitId="getCommitId"></mod-comment>
     </div>
 
     <div class="section_send_comment">
       <form @submit="sendComment">
-        <mt-field placeholder="谈谈你的看法" type="textarea" rows="1" v-model="commentContent"></mt-field>
+        <mt-field placeholder="谈谈你的看法" type="textarea" rows="1" v-model="commentContent" ref="textarea"></mt-field>
+        <input type="submit" value="发送" class="submit" @click="sendComment">
       </form>
     </div>
   </div>
@@ -49,9 +51,14 @@
         id: this.$route.query.id,
         section: {},
         comments: [],
+        comment: {
+
+        },
         pageNum: 1,
         pageSize: 5,
-        commentContent: ''
+        giveLoveNum: 0,
+        commentContent: '',
+        parentId: 0, // 默认评论为父评论
       }
     },
     created(){
@@ -59,47 +66,47 @@
         url: `/article/${this.id}`,
         method: 'get'
       }).then(res=>{
-        this.section = res.data.data
+        this.section = res.data.data;
+        this.giveLoveNum = res.data.data.giveLikeNum;
       }).catch(err=>console.log(err))
 
       // 获取评论
-      this.$ajax({
-        url: `/comment/post/${this.id}`,
-        params: {
-          pageNum: this.pageNum,
-          pageSize: this.pageSize
-        }
-      }).then(res=>{
-        console.log(res.data.data)
-        this.comments = res.data.data.list;
-      }).catch(err=>console.log(err))
+      this.getComment();
     },
     methods: {
+      // 发表评论
       sendComment(){
+        // if(this.)
+        this.parentId = parseInt(this.getCommitId);
+        console.log(this.parentId)
         this.$ajax({
           url: '/comment',
           method: 'post',
           params: {
             commentContent: this.commentContent,
-            commentsId: 1,
-            createAt: Date.now(),
-            parentId: 0,
+            // commentsId: 1,
+            // createAt: new Date().getTime(),
+            parentId: this.parentId,
             postId: this.id,
-            updateAt: Date.now(),
-            userId: this.$store.getters.getUserId()
-          },
-          header: {
-            token: this.$store.getters.getToken()
+            // updateAt: new Date().getTime(),
+            userId: this.$store.getters.getUserId
           }
-        }).then(res=>{}).catch(err=>console.log(err))
+        }).then(res=>{
+          console.log('发表成功');
+          this.parentId = 0;
+          this.getComment();
+        }).catch(err=>console.log(err))
+        return false;
       },
+      // 点赞
       love(e){
-        if(!this.$store.getters.getUserToken){
+        if(!this.$store.getters.getToken){
           this.$toast('请先登录....');
           return;
         }
-        e.currentTarget.classList.toggle('love');
-        if(e.currentTarget.classList.contains('love')){
+        let target = e.currentTarget;
+        target.classList.toggle('love');
+        if(target.classList.contains('love')){
           // 点赞数加一
           this.$ajax({
             method: 'post',
@@ -107,11 +114,15 @@
             params: {
               postId: this.id,
               userId: this.$store.getters.getUserId
-            },
-            header: {
-              token: this.$store.getters.getUserToken
             }
-          }).then(res=>{}).catch(err=>console.log(err))
+          }).then(res=>{
+            if(res.data.status != 200) {
+              target.classList.toggle('love');
+              this.$toast('已点过......')
+            }else{
+              this.giveLoveNum++;
+            }
+          }).catch(err=>console.log(err))
         }else{
           // 点赞数减一
           this.$ajax({
@@ -120,12 +131,38 @@
             params: {
               postId: this.id,
               userId: this.$store.getters.getUserId
-            },
-            header: {
-              token: this.$store.getters.getUserToken
             }
-          }).then(res=>{}).catch(err=>console.log(err))
+          }).then(res=>{
+            if(res.data.status != 200) {
+              target.classList.toggle('love');
+              this.$toast(res.data.msg)
+            }else{
+              this.giveLoveNum--;
+            }
+          }).catch(err=>console.log(err))
         }
+      },
+      // 获取评论
+      getComment() {
+        this.$ajax({
+          url: `/comment/post/${this.id}`,
+          params: {
+            pageNum: this.pageNum,
+            pageSize: this.pageSize
+          }
+        }).then(res=>{
+          console.log(res.data.data)
+          this.comments = res.data.data.list;
+        }).catch(err=>console.log(err))
+      },
+      // 获取几级父类
+      getCommitId(e){
+        this.parentId = e;
+        document.querySelector('.section_send_comment textarea').focus();
+      },
+      getPageId(){
+        this.parentId = 0;
+        console.log(this.parentId)
       }
     }
   }
@@ -193,14 +230,14 @@
     height: 16px;
     display: block;
     position: absolute;
-    background: url('/static/imgs/unlove.png') no-repeat center;
+    background: url('../../../assets/imgs/unlove.png') no-repeat center;
     background-size: 14px 16px;
   }
   .section .section_index .love{
     color: #1c9bfc;
   }
   .section .section_index .love::before{
-    background: url('/static/imgs/love.png') no-repeat center;
+    background: url('../../../assets/imgs/love.png') no-repeat center;
     background-size: 14px 16px;
   }
 
@@ -231,6 +268,18 @@
     bottom: 0;
     width: 100%;
   }
+  .section_send_comment .submit{
+    top: 0;
+    right: 0;
+    border: 0;
+    color: #333;
+    padding: 0 15px;
+    height: 100%;
+    font-size: 1rem;
+    background: skyblue;
+    position: absolute;
+  }
+
   .section_send_comment >>> .mint-cell-wrapper{
     /* font-size: 1.1rem; */
   }

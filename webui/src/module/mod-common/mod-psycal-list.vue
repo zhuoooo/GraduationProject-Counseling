@@ -1,44 +1,47 @@
 <template>
   <li>
-    <router-link :to="{name: 'psycalsection', query: {id: psycal.psychologicalId}}">
-      <div>
+      <!-- <div>
         <img src="https://avatars2.githubusercontent.com/u/39826728?s=460&v=4">
-      </div>
-      <div>
+      </div> -->
+      <div class="question">
         <h1>{{psycal.title}}</h1>
         <div class="intro">
-          暂无介绍
+          <label for="opt1" v-for="(answer, index) in psycal.answer" :key="index">
+            <input type="radio" :name="psycal.psychologicalId" value="answer">
+            <span>{{psycal.answer}}</span>
+          </label>
         </div>
+        <div class="rightAnswer" v-show="isShow">正解：{{psycal.rightAnswer}}</div>
       </div>
-    </router-link>
   </li>
 </template>
 
 <script>
   export default{
     name: 'mod-psycal-list',
-    props: ['psycal'],
+    props: ['psycal', 'isShow'],
   }
 </script>
 
 <style scoped>
   li{
     margin-top: 10px;
+    padding: 10px;
     background-color: #fbfbfb;
   }
-  li a{
+  li .question{
     color: #000;
-    display: flex;
+    /* display: flex; */
     align-items: center;
   }
-  li a img{
+  li .question img{
     width: 80px;
     margin: 10px 15px 10px 10px;
   }
-  li a h1{
+  li .question h1{
     font-size: 1rem;
   }
-  li a .intro{
+  li .question .intro{
     color: #666;
     overflow: hidden;
     line-height: 1.5;
@@ -48,5 +51,10 @@
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 3;
+  }
+  li .question .rightAnswer{
+    font-size: 0.8rem;
+    text-align: right;
+    color: red;
   }
 </style>

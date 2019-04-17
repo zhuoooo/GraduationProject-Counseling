@@ -97,15 +97,17 @@
       }
     },
     created(){
-      // this.$ajax({
-      //   methods: 'post',
-      //   url: '/userInfo',
-      //   data: {
-      //     userName: this.userName
-      //   }
-      // }).then((res)=>{
-      //   this.userInfo = res.data
-      // }).catch(err=>console.log(err))
+      if(!(this.userName && this.userPhone && this.userEmail)){
+        this.$ajax({
+          url: '/user/' + this.$store.getters.getUserId,
+          method: 'get',
+        }).then(res=>{
+          this.userName = res.data.data.username;
+          this.userPhone = res.data.data.phone;
+          this.userEmail = res.data.data.email;
+          this.$store.commit('changeInfo', { userName: res.data.data.username, userEmail: res.data.data.email, userPhone: res.data.data.phone, createAt: res.data.data.createAt, role: res.data.data.role });
+        }).catch(err=>console.log(err))
+      }
     }
 
   }

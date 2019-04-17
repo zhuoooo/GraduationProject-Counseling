@@ -34,9 +34,9 @@
           return
         }
         this.$store.dispatch('login', { username: this.username, password: this.password });
-        this.$router.push({
-          path: '/home'
-        })
+        // this.$router.push({
+        //   path: '/home'
+        // })
       },
       register(){
         this.$router.push({

@@ -37,9 +37,10 @@
           this.$toast('密码不一致');
           return;
         }else if(this.oldPwd !== this.$store.getters.getUserPwd) {
-          this.$toast('密码错误')
+          console.log(this.$store.getters.getUserPwd)
+          this.$toast('原密码错误')
         }else{
-          this.$store.dispatch('resetPwd', { password: newPwd });
+          this.$store.dispatch('resetPwd', { password: this.newPwd });
         }
       },
     }
