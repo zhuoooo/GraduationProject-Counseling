@@ -1,15 +1,15 @@
 <template>
   <div class="dialogue">
     <mt-header :title="name" fixed>
-      <router-link to="/session" slot="left">
-        <mt-button icon="back"></mt-button>
-      </router-link>
+      <span slot="left">
+        <mt-button icon="back" @click="goback"></mt-button>
+      </span>
     </mt-header>
 
     <div class="dialogue_index">
       <mt-loadmore :auto-fill="false" :top-method="loadTop" ref="loadmore" topPullText=" " topDropText=" ">
         <ul>
-          <li>
+          <!--<li>
             <div class="time">2018/12/29 12:12</div>
             <ul>
               <li class="left">
@@ -25,41 +25,20 @@
                 <div class="text">12312312311fdsafdsaf范德萨发到付</div>
               </li>
             </ul>
+          </li>-->
+          <li class="left">
+            <div class="photo">
+              <img src="./imgs/userphoto.png">
+            </div>
+            <div class="text">test</div>
           </li>
-          <li>
-            <div class="time">2018/12/29 12:12</div>
-            <ul>
-              <li class="left">
-                <div class="photo">
-                  <img src="https://avatars2.githubusercontent.com/u/39826728?s=460&v=4">
-                </div>
-                <div class="text"></div>
-              </li>
-              <li class="right">
-                <div class="photo">
-                  <img src="https://avatars2.githubusercontent.com/u/39826728?s=460&v=4">
-                </div>
-                <div class="text">12312312311fdsafdsaf范德萨发到付</div>
-              </li>
-            </ul>
+          <li class="right">
+            <div class="photo">
+              <img src="./imgs/userphoto.png">
+            </div>
+            <div class="text">暂时没有聊天记录</div>
           </li>
-          <li>
-            <div class="time">2018/12/29 12:12</div>
-            <ul>
-              <li class="left">
-                <div class="photo">
-                  <img src="https://avatars2.githubusercontent.com/u/39826728?s=460&v=4">
-                </div>
-                <div class="text"></div>
-              </li>
-              <li class="right">
-                <div class="photo">
-                  <img src="https://avatars2.githubusercontent.com/u/39826728?s=460&v=4">
-                </div>
-                <div class="text">12312312311fdsafdsaf范德萨发到付</div>
-              </li>
-            </ul>
-          </li>
+
         </ul>
       </mt-loadmore>
     </div>
@@ -77,22 +56,26 @@
   export default{
     data(){
       return {
-        name: this.$route.query.dialogueUser,
+        name: this.$route.query.username,
         introduction: '',
         theSenderId: this.$route.params.theSenderId,
         theReceiveId: this.$route.params.theReceiveId,
         pageNum: 1,
         pageSize: 10,
+        charList: []
       }
     },
     created(){
       /**
        * 这里接收交谈的内容
        */
-      // this.pageLoad(this.pageNum, this.pageSize)
+      this.pageLoad(this.pageNum, this.pageSize)
+    },
+    mounted () {
+      this.send();
     },
     methods: {
-      send(){
+      /*send(){
         this.$ajax({
           method: 'post',
           url: 'charinfo',
@@ -108,7 +91,34 @@
         }).then(res=>{
           console.log(res)
         }).catch(err=>console.log(err))
+      },*/
+      send() {
+        let vm  = this,
+          url = "http://47.107.52.96/chardatainfo",
+          sock = new SockJS(url),
+          stomp = Stomp.over(sock),
+          name = `${this.$route.params.theSenderId}_to_${this.$route.params.theReceiveId}`;
+
+        let payload = JSON.stringify({'chatContent': this.introduction});
+        stomp.connect({name}, function(frame) {
+          console.log("a");
+          stomp.send("/app/char",{}, payload);
+          vm.pageLoad();
+        });
       },
+      /*connect() {
+        var socket = new SockJS('http://localhost/charinfo');
+        stompClient = Stomp.over(socket);
+        stompClient.connect({name:'zqh'}, function (frame) {
+            console.log('Connected: ' + frame);
+            //订阅/topic/char地址，当服务端向此地址发送消息时，客户端即可收到。
+            stompClient.subscribe('/user/topic/char', function (greeting) {
+                //收到消息时的回调方法，展示欢迎信息。
+                console.log(greeting.body);
+            });
+        });
+      },
+      */
       loadTop(){
         this.pageLoad(this.pageNum, this.pageSize)
         this.$refs.loadmore.onTopLoaded();
@@ -124,12 +134,15 @@
         }).then(res=>{
           console.log(res)
           if(!res.data.data.hasNextPage){
-            this.$toast('没有更多数据');
             this.allLoaded = true;
           }
+          this.charList = res.data.data.list;
           this.pageNum++;
         }).catch(err=>console.log(err))
       },
+      goback () {
+        this.$router.go(-1);
+      }
     },
     mounted() {
       let wH = window.screen.height + 'px';
@@ -182,7 +195,7 @@
   .dialogue_index>ul{
     overflow: auto;
   }
-  .dialogue_index ul li ul li{
+  .dialogue_index ul li{
     margin-top: 20px;
   }
   .dialogue_index ul li.left{

@@ -30,7 +30,7 @@
           this.$toast('反馈内容不能为空');
         }else{
           this.$ajax({
-            url: '/feedback',
+            url: '/feedback/',
             method: 'post',
             params: {
               content: this.feedback,

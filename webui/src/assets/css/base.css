@@ -35,3 +35,19 @@ p{
   visibility: hidden;
   clear: both;
 }
+
+.common-color-gray {
+  color: #ddd !important;
+}
+
+.common-color-red {
+  color: #f00 !important;
+}
+
+.common-color-blue {
+  color: #409EFF !important;
+}
+
+.common-color-success {
+  color: #67C23A !important;
+}

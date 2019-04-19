@@ -8,15 +8,17 @@
         <div class="content_info">
           <div>
             <p class="name">{{comment.username}}</p>
-            <p class="post">第一楼 | 2019-01-01</p>
+            <p class="post">{{index}}楼 | {{comment.createAt | convertTime('YYYY-MM-DD')}}</p>
           </div>
-          <div class="right" @click="love">128</div>
         </div>
-        <div class="content_user" :data-parentid="1" @click.stop="getCommitId">给对方是否觉得萨里看风景的上课了房间里</div>
-        <div class="content_other">
-          <router-link to="">楼中楼第一楼：</router-link>
-          <span>1111111111111111111111111111111111111111111111111111111111</span>
-        </div>
+        <div class="content_user"  @click.stop="getCommitId">{{comment.commentContent}}</div>
+
+        <template v-for="(reply, idx) of comment.list">
+          <div class="content_other" >
+            <router-link to="">{{reply.username}}：</router-link>
+            <span>{{reply.commentContent}}</span>
+          </div>
+        </template>
       </div>
     </div>
   </div>
@@ -25,7 +27,7 @@
 <script>
   export default{
     name: 'mod-comment',
-    props: ['comment'],
+    props: ['comment', 'index'],
     data () {
       return {
         otherComment: [],
@@ -34,7 +36,7 @@
       }
     },
     created () {
-      this.$ajax({
+      /*this.$ajax({
         url: `/comment/parentId/3`,
         // url: `/comment/parentId/${this.comment.id}`,
         params: {
@@ -44,10 +46,10 @@
       }).then(res=>{
         console.log(res.data.data.list)
         this.otherComment = res.data
-      }).catch(err=>console.log(err))
+      }).catch(err=>console.log(err))*/
     },
     methods: {
-      love(e){
+      /*love(e){
         e.currentTarget.classList.toggle('love');
         if(!e.currentTarget.classList.contains('love')){
           // 点赞数加一
@@ -70,10 +72,10 @@
             }
           }).then(res=>{}).catch(err=>console.log(err))
         }
-      },
+      },*/
       // 获取发送评论为几级父类
-      getCommitId(e) {
-        this.$emit('getCommitId', e.currentTarget.dataset.parentid)
+      getCommitId() {
+        this.$emit('getCommitId', this.comment.commentsId)
       }
     }
   }

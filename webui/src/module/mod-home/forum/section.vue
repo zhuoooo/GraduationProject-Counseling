@@ -9,7 +9,7 @@
       <h1 class="title">{{section.title}}</h1>
       <div class="info">
         <div class="left">
-          <img src="https://avatars2.githubusercontent.com/u/39826728?s=460&v=4">
+          <img :src="comment.imagesUrl || 'https://avatars2.githubusercontent.com/u/39826728?s=460&v=4'">
           <div>
             <p class="name">{{section.userName}}</p>
             <p class="post">身份标签 | {{section.createAt | convertTime('YYYY-MM-DD')}}</p>
@@ -28,15 +28,16 @@
       <h1>全部评论</h1>
       <div v-if="comments.length>0">
         <div v-for="(comment,index) in comments" :key="index">
-          <mod-comment :comment="comment"></mod-comment>
+          <mod-comment :comment="comment"
+                       :index="index + 1"
+                       @getCommitId="getCommitId"></mod-comment>
         </div>
       </div>
       <div class="noComment" v-else>暂无评论</div>
-      <mod-comment :comment="comment" @getCommitId="getCommitId"></mod-comment>
     </div>
 
     <div class="section_send_comment">
-      <form @submit="sendComment">
+      <form>
         <mt-field placeholder="谈谈你的看法" type="textarea" rows="1" v-model="commentContent" ref="textarea"></mt-field>
         <input type="submit" value="发送" class="submit" @click="sendComment">
       </form>
@@ -58,7 +59,7 @@
         pageSize: 5,
         giveLoveNum: 0,
         commentContent: '',
-        parentId: 0, // 默认评论为父评论
+        parentId: '', // 默认评论为父评论
       }
     },
     created(){
@@ -76,19 +77,14 @@
     methods: {
       // 发表评论
       sendComment(){
-        // if(this.)
-        this.parentId = parseInt(this.getCommitId);
         console.log(this.parentId)
         this.$ajax({
-          url: '/comment',
+          url: '/comment/',
           method: 'post',
           params: {
             commentContent: this.commentContent,
-            // commentsId: 1,
-            // createAt: new Date().getTime(),
             parentId: this.parentId,
             postId: this.id,
-            // updateAt: new Date().getTime(),
             userId: this.$store.getters.getUserId
           }
         }).then(res=>{
@@ -156,8 +152,8 @@
         }).catch(err=>console.log(err))
       },
       // 获取几级父类
-      getCommitId(e){
-        this.parentId = e;
+      getCommitId(parentID = ''){
+        this.parentId = parentID;
         document.querySelector('.section_send_comment textarea').focus();
       },
       getPageId(){

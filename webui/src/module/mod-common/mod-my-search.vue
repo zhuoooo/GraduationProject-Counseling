@@ -22,8 +22,9 @@
     </div>
     <div class="searchResult">
       <ul>
-        <li v-for="(result,index) in searchResult" :key="index">
-          <router-link :to="{name: result.url, query: {keywordId: result.keywordId}}">{{ result.keywordContent }}</router-link>
+        <li v-for="(result,index) in searchResult" :key="index" @click="goCase(result)">
+          <!--<router-link :to="{name: result.url, query: {keywordId: result.psychologicalCaseId}}">{{ result.content }}</router-link>-->
+          <span>{{ result.content }}</span>
         </li>
       </ul>
     </div>
@@ -43,6 +44,14 @@
       }
     },
     methods: {
+      goCase (result) {
+        this.$router.push({
+          path: '/case/section',
+          query: {
+            id: result.psychologicalCaseId
+          }
+        })
+      },
       /**
        * 取消事件
        */
@@ -54,12 +63,11 @@
         if(this.url === 'case'){
           this.$ajax({
             method: 'get',
-            url: '/casekeyword',
+            url: '/case/search',
             params: {
-              keyword: this.currentValue
+              word: this.currentValue
             }
           }).then(res=>{
-            console.log(1)
             this.searchResult = res.data.data.list;
           }).catch(err=>console.log(err))
 
@@ -68,7 +76,7 @@
             method: 'get',
             url: '/keyword/find',
             params: {
-              word: this.currentValue
+              keyword: this.currentValue
             }
           }).then(res=>{
             console.log(res)
@@ -90,7 +98,7 @@
       //   }).catch(err=>console.log(err))
       // }else{
       //   this.$ajax({
-      //     url: 
+      //     url:
       //   })
       // }
     }

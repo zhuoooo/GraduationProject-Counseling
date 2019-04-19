@@ -8,22 +8,21 @@
     </mt-header>
 
     <div class="detail_index">
-      <h1 class="name">名字</h1>
+      <h1 class="name">{{detail.username}}专家</h1>
       <div class="info">
         <div class="left">
-          <img src="https://avatars2.githubusercontent.com/u/39826728?s=460&v=4">
+          <img :src="detail.headUrl || 'https://avatars2.githubusercontent.com/u/39826728?s=460&v=4'">
           <div>
-            <p class="name">用户名</p>
-            <p class="post">身份标签 | 2019-01-01</p>
+            <p class="name">{{detail.username}}</p>
+            <p class="post">{{detail.role}} | {{ detail.createAt | convertTime('YYYY-MM-DD') }}</p>
           </div>
         </div>
-        <router-link :to="{ name: 'dialogue', params: {theSenderId, theReceiveId}}">
+        <router-link :to="{ name: 'dialogue', params: {theSenderId, theReceiveId}, query: {username: detail.username}}">
           <mt-button type="primary" size="small" class="button">咨询</mt-button>
         </router-link>
       </div>
-      <div class="detail_info">
-        fdafdafdsfffffffffffffffffffffffffffffffffffffffffffffffffff夫
-        <img src="https://avatars2.githubusercontent.com/u/39826728?s=460&v=4">
+      <div class="detail_info" :class="{'common-color-gray': !detail.content}">
+        {{detail.content || '这个专家很懒，没有留下什么~'}}
       </div>
     </div>
   </div>
@@ -34,19 +33,16 @@
     data() {
       return {
         detail: {},
-        theReceiveId: this.$route.query.id,
-        theSenderId: /*this.$store.getter.getUserId*/1
+        theReceiveId: this.$route.query.userId,
+        theSenderId: this.$store.getters.getUserId
       }
     },
     created() {
       this.$ajax({
         method: 'get',
-        url: '',
-        data: {
-          id: theReceiveId
-        }
-      }).then(res=>{
-        this.detail = res.data;
+        url: `/user/${this.theReceiveId}`
+      }).then(({data})=>{
+        this.detail = data.data;
       }).catch(err=>console.log(err))
     }
   }

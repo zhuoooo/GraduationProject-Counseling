@@ -43,19 +43,18 @@
       }
     },
     created() {
-      // this.$ajax({
-      //   url: `charinfo/char/${this.$store.getters.getUserId}`,
-      //   method: 'get',
-      //   params: {
-      //     pageNum: this.pageNum,
-      //     pageSize: this.pageSize
-      //   }
-      // }).then(res=>{
-      //   // this.sessions = res.data.data.list;
-      //   console.log(res)
-      // })
-        // this.sessions = this.$store.getters.getCharInfo;
-      // new chat();
+      this.$ajax({
+        url: `/charinfo/char/${this.$store.getters.getUserId}`,
+        method: 'get',
+        params: {
+          pageNum: this.pageNum,
+          pageSize: this.pageSize
+        }
+      }).then(res=>{
+        // this.sessions = res.data.data.list;
+        console.log(res)
+      })
+      this.sessions = this.$store.getters.getCharInfo;
     }
   }
 </script>

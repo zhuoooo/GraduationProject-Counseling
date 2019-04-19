@@ -14,7 +14,7 @@
     created() {
       console.log(this.$route.params.search)
       if(this.$route.params.search === 'case'){
-        this.url = '/casekeyword/'
+        this.url = '/case/search'
       }else if(this.$route.params.search === 'forum'){
         this.url = '/keyword/all'
       }

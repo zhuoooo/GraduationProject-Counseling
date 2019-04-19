@@ -1,6 +1,6 @@
 <template>
   <div class="release">
-    <mt-header title="发送帖子" fixed>
+    <mt-header title="发布帖子" fixed>
       <router-link to="/forum" slot="left">
         <mt-button icon="back"></mt-button>
       </router-link>
@@ -26,7 +26,7 @@
     methods: {
       release(){
         this.$ajax({
-          url: '/article',
+          url: '/article/',//
           method: 'post',
           params: {
             content: this.content,

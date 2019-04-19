@@ -11,8 +11,8 @@
 
     <div class="revise_choose">
       <mt-field label="用户名" placeholder="请输入用户名" v-model="username"></mt-field>
-      <mt-field label="手机号" placeholder="请输入手机号" type="tel" v-model="phone"></mt-field>
-      <mt-field label="邮箱" placeholder="请输入邮箱" type="email" v-model="email"></mt-field>
+      <mt-field label="手机号" placeholder="请输入手机号" disabled type="tel" v-model="phone"></mt-field>
+      <mt-field label="邮箱" placeholder="请输入邮箱" disabled type="email" v-model="email"></mt-field>
     </div>
   </div>
 </template>
@@ -30,7 +30,7 @@
     methods: {
       // 点击保存修改事件
       revise(){
-        this.$store.dispatch('revise', { email: this.eamil, username: this.username, phone: this.phone })
+        this.$store.dispatch('revise', { email: this.email, username: this.username, phone: this.phone })
       },
     }
   }

@@ -84,7 +84,7 @@
         }else{
           this.$ajax({
             method: 'get',
-            url: '/casekeyword',
+            url: '/case/search',
             params: {
               keyword: this.$route.query.keyword,
               pageNum: this.pageNum,

@@ -3,7 +3,7 @@
     <!-- 轮播 -->
     <mt-swipe :auto="4000">
       <mt-swipe-item v-for="(img,index) in imgs" :key="index">
-        <img :src="img.img">
+        <img :src="img">
       </mt-swipe-item>
     </mt-swipe>
 
@@ -61,7 +61,7 @@
     name: "index",
     data () {
       return {
-        imgs: [], //轮播图数据
+        imgs: ['http://img2.xiazaizhijia.com/walls/20140829/1440x900_89a2554a1241c64.jpg', 'https://abc.2008php.com/2014_Website_appreciate/2015-06-07/20150607232304.jpg'], //轮播图数据
         experts: [
           {
             "id": 1,
@@ -82,6 +82,12 @@
       // .then(res=>{
       //   this.experts = res.data.data.experts
       // })
+      this.$ajax({
+        method: 'get',
+        url: '/user/user/type/2'
+      }).then(({data}) => {
+        this.experts = data.data.list;
+      });
     },
   }
 </script>

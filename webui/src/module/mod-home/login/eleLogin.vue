@@ -13,7 +13,7 @@
       </mt-field>
       <div class="line"></div>
       <div class="button">
-        <mt-button type="primary" size="normal" @submit="this.$route.params.name==='forgot'? reset : login" @click="this.$route.params.name==='forgot'? reset : login">{{ btntext }}</mt-button>
+        <mt-button type="primary" size="normal" @submit="this.$route.params.name==='forgot'? reset : login" @click="checkSet">{{ btntext }}</mt-button>
       </div>
     </form>
   </div>
@@ -34,7 +34,7 @@
     margin-top: 60px;
   }
   .eleLogin form >>> .sms{
-    
+
   }
   .eleLogin form >>> .mint-button{
     font-size: 0.9rem;
@@ -95,7 +95,9 @@
           }).catch(err=>/*reject(err)*/console.log(err))
         }
       },
-
+      checkSet () {
+        (this.$route.params.name==='forgot'? this.reset : this.login)()
+      },
       // 重置密码
       reset() {
         this.verifysms().then(data => {
@@ -127,7 +129,8 @@
               phone: this.phone
             }
           }).then(res=>{
-            this.$store.commit('changeLogin', { token: res.data.token, userId: res.data.userId});
+            debugger
+            this.$store.commit('changeLogin', { token: res.data.data.token, userId: res.data.data.userId});
             this.$toast('登录成功');
             this.$router.push({
               path: '/home'
@@ -147,8 +150,8 @@
               code: this.sms
             }
           }).then(res=>{
+            // this.$store.commit('changeLogin', { token: res.data.data.token, userId: res.data.userId});
             resolve(res.data)
-            // this.$store.commit('changeLogin', { token: res.data.token, userId: res.data.userId});
           }).catch(err=>{this.$toast('验证错误');})
         })
       },

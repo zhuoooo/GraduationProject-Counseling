@@ -8,7 +8,7 @@ import router from '../router/index'
 Vue.use(Vuex);
 
 const store = new Vuex.Store({
- 
+
   state: {
     userId: localStorage.getItem('userId') ? localStorage.getItem('userId') : '',
     userName: '',
@@ -56,7 +56,7 @@ const store = new Vuex.Store({
     // 登录
     login(state, user) {
       let getLoginToken = new Promise((resolve, reject) => {
-        axios({
+        Vue.prototype.$ajax({
           url: '/user/login',
           method: 'post',
           params: {
@@ -71,7 +71,7 @@ const store = new Vuex.Store({
       });
 
       getLoginToken.then(data=>{
-        console.log(!data)
+        console.log(!!data)
         if(!!data){
           store.commit('changeLogin', { token: data.token, userId: data.userId });
           store.commit('changeInfo', { userName: data.username, userEmail: data.email, userPhone: data.phone, createAt: data.createAt, role: data.role });
@@ -117,14 +117,12 @@ const store = new Vuex.Store({
         url: `/user/${store.getters.getUserId}`,
         method: 'put',
         params: {
-          createAt: store.getters.getUserCta,
           email: user.email,
           headUrl: user.headUrl,
           password: user.password,
           phone: user.phone,
           role: store.getters.getUserRole,
-          updateAt: new Date().getTime(),
-          username: user.userName,
+          username: user.username,
         },
         header: {
           token: store.getters.getToken

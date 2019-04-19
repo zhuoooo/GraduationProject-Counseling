@@ -1,13 +1,13 @@
 <template>
   <ul>
     <li v-for="expert in experts" :key="expert.id">
-      <router-link :to="{name: 'detailExpert', query: {id: expert.id}}">
-        <img :src="expert.photo">
+      <router-link :to="{name: 'detailExpert', query: {userId: expert.userId}}">
+        <img :src="expert.headUrl">
         <p>
-          <span class="name">{{ expert.name }}</span>
-          <span class="rank">{{ expert.rank }}</span>
+          <span class="name">{{ expert.username }}</span>
+          <span class="rank">{{ expert.createAt | convertTime('YYYY-MM-DD') }}</span>
         </p>
-        <p class="number">{{ expert.number }}次咨询</p>
+        <p class="number">{{ expert.role || '-' }}</p>
       </router-link>
     </li>
   </ul>
@@ -34,14 +34,14 @@
 </script>
 
 <style type="text/css" scoped>
-  
+
   ul{
     display: flex;
     padding: 5px 20px;
     flex-wrap: wrap;
   }
   ul li{
-    width: 33.3%;
+    width: 50%;
     padding: 0 5px 5px;
     box-sizing: border-box;
   }
