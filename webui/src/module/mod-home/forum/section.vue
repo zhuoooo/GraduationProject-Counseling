@@ -9,7 +9,7 @@
       <h1 class="title">{{section.title}}</h1>
       <div class="info">
         <div class="left">
-          <img :src="comment.imagesUrl || 'https://avatars2.githubusercontent.com/u/39826728?s=460&v=4'">
+          <img :src="comment.imagesUrl || defaultAvg">
           <div>
             <p class="name">{{section.userName}}</p>
             <p class="post">身份标签 | {{section.createAt | convertTime('YYYY-MM-DD')}}</p>
@@ -39,16 +39,18 @@
     <div class="section_send_comment">
       <form>
         <mt-field placeholder="谈谈你的看法" type="textarea" rows="1" v-model="commentContent" ref="textarea"></mt-field>
-        <input type="submit" value="发送" class="submit" @click="sendComment">
+        <input type="submit" :value="parentId ? '回复' : '发送'" class="submit" @click="sendComment">
       </form>
     </div>
   </div>
 </template>
 
 <script>
+  import defaultAvg from './imgs/userphoto.png';
   export default{
     data(){
       return {
+        defaultAvg,
         id: this.$route.query.id,
         section: {},
         comments: [],
@@ -77,7 +79,6 @@
     methods: {
       // 发表评论
       sendComment(){
-        console.log(this.parentId)
         this.$ajax({
           url: '/comment/',
           method: 'post',
@@ -88,8 +89,8 @@
             userId: this.$store.getters.getUserId
           }
         }).then(res=>{
-          console.log('发表成功');
-          this.parentId = 0;
+          this.parentId = '';
+          this.commentContent = '';
           this.getComment();
         }).catch(err=>console.log(err))
         return false;
@@ -157,8 +158,7 @@
         document.querySelector('.section_send_comment textarea').focus();
       },
       getPageId(){
-        this.parentId = 0;
-        console.log(this.parentId)
+        this.parentId = '';
       }
     }
   }

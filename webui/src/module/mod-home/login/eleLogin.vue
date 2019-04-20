@@ -9,7 +9,7 @@
       <mt-field placeholder="请输入手机号" v-model="phone"></mt-field>
       <mt-field placeholder="请输入新密码" type="password" v-model="password" v-if="this.$route.params.name==='forgot'"></mt-field>
       <mt-field placeholder="请输入验证码" v-model="sms" class="sms">
-        <mt-button type="primary" size="normal" @click="getCode">{{ smstext }}</mt-button>
+        <mt-button type="primary" size="normal" :disabled="isSend" @click="getCode">{{ smstext }}</mt-button>
       </mt-field>
       <div class="line"></div>
       <div class="button">
@@ -61,6 +61,7 @@
         sms: '',
         password: '',
         smstext: '获取验证码',
+        isSend: false,
         name: this.$route.params.name==='forgot'? '忘记密码' : '短信登录',
         btntext: this.$route.params.name==='forgot'? '重置密码' : '立即登录',
       }
@@ -77,8 +78,13 @@
             }
           }).then(res=>{
             // resolve(res.data)
-            this.smstext = '已发送';
-            this.sms = res.data;
+            if (res.data.status === 200) {
+
+              this.resetText();
+            } else {
+              this.$toast(res.data.msg)
+            }
+            //this.sms = res.data;
           }).catch(err=>/*reject(err)*/console.log(err))
         // })
         }else{
@@ -90,10 +96,25 @@
             }
           }).then(res=>{
             // resolve(res.data)
-            this.smstext = '已发送';
-            this.sms = res.data;
+            if (res.data.status === 200) {
+
+              this.resetText();
+            } else {
+              this.$toast(res.data.msg)
+            }
+            //this.sms = res.data;
           }).catch(err=>/*reject(err)*/console.log(err))
         }
+      },
+      resetText () {
+
+        this.smstext = '已发送';
+        this.isSend = true;
+        setTimeout(() => {
+          this.smstext = '获取验证码';
+          this.isSend = false;
+
+        }, 60 * 1000);
       },
       checkSet () {
         (this.$route.params.name==='forgot'? this.reset : this.login)()
@@ -129,7 +150,6 @@
               phone: this.phone
             }
           }).then(res=>{
-            debugger
             this.$store.commit('changeLogin', { token: res.data.data.token, userId: res.data.data.userId});
             this.$toast('登录成功');
             this.$router.push({

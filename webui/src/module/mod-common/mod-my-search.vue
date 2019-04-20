@@ -24,7 +24,7 @@
       <ul>
         <li v-for="(result,index) in searchResult" :key="index" @click="goCase(result)">
           <!--<router-link :to="{name: result.url, query: {keywordId: result.psychologicalCaseId}}">{{ result.content }}</router-link>-->
-          <span>{{ result.content }}</span>
+          <span>{{ result.title }}</span>
         </li>
       </ul>
     </div>

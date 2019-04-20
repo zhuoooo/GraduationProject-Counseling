@@ -44,9 +44,16 @@
         })
       },
       pageLoad(pageNum, pageSize){
+        let userId = this.$route.query.userId,
+          url = '/article/all';
+
+        if (userId) {
+          url = `/article/user/${userId}`
+        }
+
         this.$ajax({
           method: 'get',
-          url: '/article/all',
+          url,
           params: {
             pageNum: pageNum,
             pageSize: pageSize
@@ -54,7 +61,7 @@
         }).then(res=>{
           this.sections = this.sections.concat(res.data.data.list);
           if(!res.data.data.hasNextPage){
-            this.$toast('没有更多数据');
+            // this.$toast('没有更多数据');
             this.allLoaded = true;
           }
           this.pageNum++;
@@ -62,7 +69,6 @@
       },
       loadBottom(){
         this.pageLoad(this.pageNum, this.pageSize)
-        console.log('上拉被执行')
         this.$refs.loadmore.onBottomLoaded();
       }
     }

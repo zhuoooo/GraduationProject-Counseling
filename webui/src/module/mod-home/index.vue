@@ -61,27 +61,12 @@
     name: "index",
     data () {
       return {
-        imgs: ['http://img2.xiazaizhijia.com/walls/20140829/1440x900_89a2554a1241c64.jpg', 'https://abc.2008php.com/2014_Website_appreciate/2015-06-07/20150607232304.jpg'], //轮播图数据
-        experts: [
-          {
-            "id": 1,
-            "name": "李红",
-            "rank": "博士",
-            "number": 123,
-            "photo": "https://avatars2.githubusercontent.com/u/39826728?s=460&v=4"
-          }
-        ]
+        imgs: ['http://img2.xiazaizhijia.com/walls/20140829/1440x900_89a2554a1241c64.jpg', 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1555700606910&di=4fdd7fba07998b76d6cc4be3ae1ddb72&imgtype=0&src=http%3A%2F%2Fa3.att.hudong.com%2F01%2F84%2F300000309206129367846097752.jpg'], //轮播图数据
+        experts: []
       }
     },
     created () {
-      // this.$ajax.get('/swipe')
-      // .then(res=>{
-      //   this.imgs = res.data.data.swipe
-      // }).catch(err=>console.log(err))
-      // this.$ajax.get('/expert/4')
-      // .then(res=>{
-      //   this.experts = res.data.data.experts
-      // })
+      this.$store.dispatch('setUserInfo');
       this.$ajax({
         method: 'get',
         url: '/user/user/type/2'

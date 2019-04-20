@@ -26,7 +26,7 @@ const store = new Vuex.Store({
     getUserPhone: state => state.userPhone,
     getUserEmail: state => state.userEmail,
     getCharInfo: state => state.charInfo,
-    getUserId: state => state.userId,
+    getUserId: state => parseInt(state.userId, 10),
     getUserPwd: state => state.password,
     getUserCta: state => state.createAt,
     getUserRole: state => state.role,
@@ -39,9 +39,9 @@ const store = new Vuex.Store({
       localStorage.setItem('userId', user.userId);
     },
     changeInfo(state, user) {
-      state.userName = user.userName;
-      state.userPhone = user.userPhone;
-      state.userEmail = user.userEmail;
+      state.userName = user.username;
+      state.userPhone = user.phone;
+      state.userEmail = user.email;
       state.createAt = user.createAt;
       state.role = user.role;
     },
@@ -64,6 +64,9 @@ const store = new Vuex.Store({
             password: user.password
           }
         }).then(res=>{
+          if (res.data.status !== 200) {
+            return Vue.prototype.$toast(res.data.msg || '密码错误');
+          }
           resolve(res.data.data)
           store.commit('changePwd', { password: user.password});
           // store.commit('changeLogin', { token: res.data.token, userId: res.data.userId });
@@ -71,16 +74,15 @@ const store = new Vuex.Store({
       });
 
       getLoginToken.then(data=>{
-        console.log(!!data)
-        if(!!data){
+        console.log(data.token)
+        if(!!data.token){
           store.commit('changeLogin', { token: data.token, userId: data.userId });
-          store.commit('changeInfo', { userName: data.username, userEmail: data.email, userPhone: data.phone, createAt: data.createAt, role: data.role });
+          store.commit('changeInfo', data);
           router.push({
             path: '/home'
           })
         }else{
-          Vue.$toast('账号或密码错误');
-          return
+          return Vue.prototype.$toast('账号或密码错误');
         }
       }).catch(err=>console.log(err))
     },
@@ -94,10 +96,11 @@ const store = new Vuex.Store({
           email: user.email,
           password: user.password,
           phone: user.phone,
-          username: user.username
+          username: user.username,
+          type: 1,
+          status: 0
         }
       }).then(res=>{
-        console.log(res)
         if(res.data.status == 200){
           store.commit('changeLogin', { token: res.data.token, userId: res.data.userId });
           Vue.$toast('注册成功');
@@ -128,13 +131,22 @@ const store = new Vuex.Store({
           token: store.getters.getToken
         }
       }).then(res=>{
-        store.commit('changeInfo', {})
-        Vue.$messagebox.alert('修改成功').then(action => {
+        Vue.$messagebox.alert('修改成功').then(() => {
+          store.dispatch('setUserInfo')
           router.push({
             path: '/center'
           })
         });
       }).catch(err=>console.log(err))
+    },
+
+    setUserInfo ({state}) {
+      Vue.prototype.$ajax({
+        method: 'get',
+        url: '/user/' + state.userId
+      }).then(({data}) => {
+        store.commit('changeInfo', data.data);
+      });
     },
 
     // 修改密码
@@ -156,24 +168,7 @@ const store = new Vuex.Store({
           })
         });
       }).catch(err=>console.log(err))
-    },
-
-    // 获取交流人
-    char(state){
-      axios({
-        url: `/charinfo/char/${store.getters.getUserId}`,
-        method: 'get',
-        header: {
-          token: store.getters.getToken
-        },
-        params: {
-          pageNum: 1,
-          pageSize: 10
-        }
-      }).then(res=>{
-        store.commit('changeChar', {  });
-      }).catch(err=>console.log(err))
-    },
+    }
   }
 });
 

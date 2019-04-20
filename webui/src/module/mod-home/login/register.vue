@@ -3,9 +3,9 @@
     <h1>大学生心理咨询平台</h1>
     <form onsubmit="return false;">
       <mt-field placeholder="请输入用户名" v-model="username"></mt-field>
-      <mt-field placeholder="请输入密码" type="password" v-model="password"></mt-field>
-      <mt-field placeholder="请输入邮箱" type="email" v-model="email"></mt-field>
       <mt-field placeholder="请输入手机号" type="tel" v-model="phone"></mt-field>
+      <mt-field placeholder="请输入邮箱" type="email" v-model="email"></mt-field>
+      <mt-field placeholder="请输入密码" type="password" v-model="password"></mt-field>
       <div class="line"></div>
       <div class="button">
         <mt-button type="primary" size="normal" @submit="register" @click="register">注册并登陆</mt-button>
@@ -28,8 +28,7 @@
     methods: {
       register(){
         if(this.username == '' || this.password == ''){
-          this.$toast('请输入完整信息');
-          return
+          return this.$toast('请输入完整信息');
         }
         this.$store.dispatch('register', { username: this.username, password: this.password, email: this.email, phone: this.phone });
       }

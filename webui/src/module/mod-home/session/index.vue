@@ -8,12 +8,12 @@
     <div class="session_list">
       <ul>
         <li v-for="session in sessions" :key="session.id">
-          <router-link :to="{ name: 'dialogue', params: { theSenderId: 133, theReceiveId: 132 }}" class="router">
-            <img :src="session.img">
+          <router-link :to="{ name: 'dialogue', params: { theSenderId: userId, theReceiveId: session.theReceiveId}, query: {username: session.receiveUsername}}" class="router">
+            <img src="./imgs/userphoto.png">
             <div>
               <p class="info">
-                <span class="name">{{ session.name }}</span>
-                <span class="time">{{ session.lasttime }}</span>
+                <span class="name">{{ session.receiveUsername }}</span>
+                <span class="time">{{ session.senderUsername }}</span>
               </p>
               <p class="content">{{ session.content }}</p>
             </div>
@@ -29,17 +29,10 @@
   export default{
     data(){
       return {
-        sessions: [
-          {
-            'id': '1',
-            'img': 'https://avatars2.githubusercontent.com/u/39826728?s=460&v=4',
-            'name': '张三',
-            'lasttime': '2018/08/01',
-            'content': '不用担心，我没有什么烦心事心么烦心事心么烦心事心事心'
-          }
-        ],
+        sessions: [],
         pageSize: 8,
         pageNum: 1,
+        userId: this.$store.getters.getUserId
       }
     },
     created() {
@@ -51,8 +44,7 @@
           pageSize: this.pageSize
         }
       }).then(res=>{
-        // this.sessions = res.data.data.list;
-        console.log(res)
+        this.sessions = res.data.data.list;
       })
       this.sessions = this.$store.getters.getCharInfo;
     }

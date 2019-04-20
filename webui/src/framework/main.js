@@ -36,8 +36,8 @@ Vue.component(MyCaseList.name, MyCaseList)
 // 路由守卫
 router.beforeEach((to, from, next)=>{
   if(to.matched.some(req => req.meta.requireLogin)){
-    if(!store.getters.getToken){
-      console.log(store.getters.getToken)
+
+    if(!store.getters.getToken || !store.getters.getUserId){
       MintUI.Toast('请先登录...');
       next({
         path: '/login'

@@ -29,10 +29,6 @@
       this.$ajax({
         url: '/user/user/type/2',
         method: 'get',
-        params: {
-          pageNum: 4,
-          pageSize: 1
-        },
       })
       .then(res=>{
         this.experts = res.data.data.list

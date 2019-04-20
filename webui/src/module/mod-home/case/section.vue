@@ -1,9 +1,7 @@
 <template>
   <div class="section">
     <mt-header title="案例内容" fixed>
-      <router-link to="/case" slot="left">
-        <mt-button icon="back"></mt-button>
-      </router-link>
+      <mt-button icon="back" @click="goback" slot="left"></mt-button>
     </mt-header>
     <div class="section_index">
       <h1 class="title">{{section.title}}</h1>
@@ -33,6 +31,9 @@
       }
     },
     methods: {
+      goback () {
+        this.$router.go(-1)
+      },
       getSection(){
         return new Promise((resolve, reject) => {
           this.$ajax({

@@ -82,7 +82,7 @@ export default {
           this.showCenter();break;
       };
     },
-    showTab(to,from){
+    showTab(to, from){
       if(to.path == '/' || to.path == '/home' || to.path == '/session' || to.path == '/forum' || to.path == '/center'){
         this.tabBar = true
       }else{
@@ -110,12 +110,15 @@ export default {
     },
 
     // 监听路由变化
-    $route(to, from){
-      this.showTab(to, from);
-      if(this.tabBar){
-        this.selected = to.name;
+    $route: {
+      deep: true,
+      handler (to, from) {
+        this.showTab(to, from);
+        if(this.tabBar){
+          this.selected = to.name;
+        }
+        this.switchTab( this.selected )
       }
-      this.switchTab( this.selected )
     }
   },
   mounted() {
@@ -127,7 +130,6 @@ export default {
     this.lastTime = new Date().getTime();
 
     // new chat('/api');
-    console.log(chat)
   }
 }
 </script>

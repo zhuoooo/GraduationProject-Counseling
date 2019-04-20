@@ -12,7 +12,7 @@
     <div class="revise_choose">
       <mt-field type="password" v-model="oldPwd" placeholder="请输入原密码"></mt-field>
       <mt-field type="password" v-model="newPwd" placeholder="请输入新密码"></mt-field>
-      <mt-field type="password" v-model="newPwd2" placeholder="再次输入新密码" @input="verify"></mt-field>
+      <mt-field type="password" v-model="newPwd2" placeholder="再次输入新密码"></mt-field>
     </div>
   </div>
 </template>
@@ -28,18 +28,12 @@
       }
     },
     methods: {
-      verify() {
-        console.log(11)
-      },
       // 点击保存修改事件
       revise() {
         if(this.newPwd !== this.newPwd2){
           this.$toast('密码不一致');
           return;
-        }else if(this.oldPwd !== this.$store.getters.getUserPwd) {
-          console.log(this.$store.getters.getUserPwd)
-          this.$toast('原密码错误')
-        }else{
+        } else {
           this.$store.dispatch('resetPwd', { password: this.newPwd });
         }
       },

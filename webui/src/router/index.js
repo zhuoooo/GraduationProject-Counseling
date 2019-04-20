@@ -74,7 +74,10 @@ export default new Router({
     {
       path: '/psycal',
       name: 'psycal',
-      component: Psylist
+      component: Psylist,
+      meta: {
+        requireLogin: true
+      }
     },
     {
       path: '/psycal/section',

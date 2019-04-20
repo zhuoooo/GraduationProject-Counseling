@@ -2,7 +2,7 @@
   <ul>
     <li v-for="expert in experts" :key="expert.id">
       <router-link :to="{name: 'detailExpert', query: {userId: expert.userId}}">
-        <img :src="expert.headUrl">
+        <img :src="expert.headUrl" alt="头像图片">
         <p>
           <span class="name">{{ expert.username }}</span>
           <span class="rank">{{ expert.createAt | convertTime('YYYY-MM-DD') }}</span>
@@ -42,7 +42,7 @@
   }
   ul li{
     width: 50%;
-    padding: 0 5px 5px;
+    padding: 0 5px 15px;
     box-sizing: border-box;
   }
   ul li img{

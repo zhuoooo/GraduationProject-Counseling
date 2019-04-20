@@ -1,5 +1,5 @@
 <template>
-  <div class="case-list">
+  <div class="case-list-box">
     <p class="title">{{section.title}}</p>
     <section class="intro">
       {{section.content}}
@@ -11,6 +11,7 @@
     </div>
     <div class="action">
       <span>{{section.createAt | convertTime('YYYY/MM/DD')}}</span>
+      <span>由 {{section.username}} 发布</span>
     </div>
   </div>
 </template>
@@ -27,8 +28,7 @@
 </script>
 
 <style scoped>
-  .case-list{
-    margin-top: 10px;
+  .case-list-box{
     padding: 10px;
     background-color: #fff;
     border-bottom: 1px solid #bcbcbc;

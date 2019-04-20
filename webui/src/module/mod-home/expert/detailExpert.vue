@@ -21,9 +21,18 @@
           <mt-button type="primary" size="small" class="button">咨询</mt-button>
         </router-link>
       </div>
-      <div class="detail_info" :class="{'common-color-gray': !detail.content}">
+      <div class="detail_info" :class="{'common-color-gray': !detail.content}" v-if="!caseList.length">
         {{detail.content || '这个专家很懒，没有留下什么~'}}
       </div>
+      <mt-loadmore class="case-list" v-else>
+        <ul>
+          <li v-for="section in caseList" :key="section.psychologicalCaseId">
+            <router-link :to="{path: '/case/section', query: {id: section.psychologicalCaseId}}">
+              <mod-case-list :section="section"></mod-case-list>
+            </router-link>
+          </li>
+        </ul>
+      </mt-loadmore>
     </div>
   </div>
 </template>
@@ -33,9 +42,13 @@
     data() {
       return {
         detail: {},
+        caseList: [],
         theReceiveId: this.$route.query.userId,
         theSenderId: this.$store.getters.getUserId
       }
+    },
+    mounted () {
+      this.setTeacherCase()
     },
     created() {
       this.$ajax({
@@ -44,6 +57,16 @@
       }).then(({data})=>{
         this.detail = data.data;
       }).catch(err=>console.log(err))
+    },
+    methods: {
+      setTeacherCase () {
+        this.$ajax({
+          methods: 'get',
+          url: `/case/user/${this.theReceiveId}`
+        }).then(({data}) => {
+          this.caseList = data.data.list
+        })
+      }
     }
   }
 </script>

@@ -6,7 +6,7 @@
       </div>
       <input type="search" name="search" placeholder="请输入关键词搜索案例" @focus="search">
     </form>
-    <mt-loadmore :auto-fill="false" :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" ref="loadmore">
+    <mt-loadmore class="case-list" :auto-fill="false" :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" ref="loadmore">
       <ul>
         <li v-for="section in sections" :key="section.psychologicalCaseId">
           <router-link :to="{path: '/case/section', query: {id: section.psychologicalCaseId}}">
@@ -119,7 +119,8 @@
     padding: 0 15px;
     box-sizing: border-box;
     background-color: #fff;
-    position: relative;
+    position: fixed;
+    top: 0;
   }
   .case .search input{
     font-size: 0.9rem;
@@ -135,6 +136,9 @@
     line-height: 40px;
     height: 40px;
     background-color: transparent;
+  }
+  .case-list {
+    margin-top: 50px;
   }
   .case .search button:focus{
     outline: none;

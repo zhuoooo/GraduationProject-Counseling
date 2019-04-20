@@ -1,9 +1,7 @@
 <template>
   <div class="release">
     <mt-header title="发布帖子" fixed>
-      <router-link to="/forum" slot="left">
-        <mt-button icon="back"></mt-button>
-      </router-link>
+        <mt-button @click="goback" icon="back" slot="left"></mt-button>
       <!-- <router-link to=""> -->
         <mt-button slot="right" @click="release">发布</mt-button>
       <!-- </router-link> -->
@@ -24,6 +22,9 @@
       }
     },
     methods: {
+      goback () {
+        this.$router.go(-1)
+      },
       release(){
         this.$ajax({
           url: '/article/',//

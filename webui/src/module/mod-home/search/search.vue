@@ -12,7 +12,6 @@
       }
     },
     created() {
-      console.log(this.$route.params.search)
       if(this.$route.params.search === 'case'){
         this.url = '/case/search'
       }else if(this.$route.params.search === 'forum'){
@@ -21,3 +20,8 @@
     }
   }
 </script>
+
+<style scoped>
+  .search {
+  }
+</style>

@@ -2,7 +2,7 @@
   <div class="comment">
     <div class="info">
       <div class="img">
-        <img src="https://avatars2.githubusercontent.com/u/39826728?s=460&v=4">
+        <img :src="comment.headUrl || defaultAvg">
       </div>
       <div class="comment_content">
         <div class="content_info">
@@ -25,11 +25,13 @@
 </template>
 
 <script>
+  import defaultAvg from './img/userphoto.png';
   export default{
     name: 'mod-comment',
     props: ['comment', 'index'],
     data () {
       return {
+        defaultAvg,
         otherComment: [],
         pageNum: 1,
         pageSize: 5

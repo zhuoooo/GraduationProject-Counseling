@@ -8,7 +8,7 @@
 
     <div class="dialogue_index">
       <mt-loadmore :auto-fill="false" :top-method="loadTop" ref="loadmore" topPullText=" " topDropText=" ">
-        <ul>
+        <ul class="dialogue__content" ref="char">
           <!--<li>
             <div class="time">2018/12/29 12:12</div>
             <ul>
@@ -26,17 +26,12 @@
               </li>
             </ul>
           </li>-->
-          <li class="left">
+          <li v-for="msg of charListBySort" :class="sender(msg)">
             <div class="photo">
               <img src="./imgs/userphoto.png">
             </div>
-            <div class="text">test</div>
-          </li>
-          <li class="right">
-            <div class="photo">
-              <img src="./imgs/userphoto.png">
-            </div>
-            <div class="text">暂时没有聊天记录</div>
+            <div class="username common-color-gray">{{msg.senderUsername}}</div>
+            <div class="text">{{msg.chatContent}}</div>
           </li>
 
         </ul>
@@ -58,86 +53,110 @@
       return {
         name: this.$route.query.username,
         introduction: '',
+        userId: this.$store.getters.getUserId,
         theSenderId: this.$route.params.theSenderId,
         theReceiveId: this.$route.params.theReceiveId,
+        connectID: `${this.$route.params.theSenderId}_to_${this.$route.params.theReceiveId}`,
         pageNum: 1,
-        pageSize: 10,
+        pageSize: 999,
         charList: []
       }
     },
-    created(){
+
+    created () {
       /**
        * 这里接收交谈的内容
        */
-      this.pageLoad(this.pageNum, this.pageSize)
+      this.refreshCharContent();
+      this.connect();
     },
-    mounted () {
-      this.send();
-    },
-    methods: {
-      /*send(){
-        this.$ajax({
-          method: 'post',
-          url: 'charinfo',
-          params: {
-            chatContent: this.introduction,
-            chatinfoId: this.$store.getters.getUserId,
-            createAt: new Date().getTime(),
-            status: 200,
-            theReceiveId: this.$route.params.theReceiveId,
-            theSenderId: this.$route.params.theSenderId,
-            updateAt: new Date().getTime()
+
+    computed: {
+      sender () {
+        return (msg) => {
+          return {
+            'right': msg.theSenderId === parseInt(this.theSenderId),
+            'left': msg.theSenderId !== parseInt(this.theSenderId)
           }
-        }).then(res=>{
-          console.log(res)
-        }).catch(err=>console.log(err))
-      },*/
+        };
+      },
+      charListBySort () {
+        return this.charList.sort((prev, next) => {
+          return prev.createAt - next.createAt;
+        });
+      }
+    },
+
+    methods: {
       send() {
         let vm  = this,
           url = "http://47.107.52.96/chardatainfo",
           sock = new SockJS(url),
-          stomp = Stomp.over(sock),
-          name = `${this.$route.params.theSenderId}_to_${this.$route.params.theReceiveId}`;
+          stomp = Stomp.over(sock);
 
-        let payload = JSON.stringify({'chatContent': this.introduction});
-        stomp.connect({name}, function(frame) {
-          console.log("a");
+        let payload = JSON.stringify({
+          chatContent: vm.introduction,
+          theSenderId: vm.theSenderId,
+          theReceiveId: vm.theReceiveId
+        });
+        stomp.connect({name: 'zqh'}, function(frame) {
           stomp.send("/app/char",{}, payload);
-          vm.pageLoad();
+          // vm.refreshCharContent();
+          vm.charList.push({
+            chatContent: vm.introduction,
+            theSenderId: vm.theSenderId,
+            theReceiveId: vm.theReceiveId,
+            createAt: Date.now()
+          })
+          vm.introduction = '';
+
         });
       },
-      /*connect() {
-        var socket = new SockJS('http://localhost/charinfo');
-        stompClient = Stomp.over(socket);
-        stompClient.connect({name:'zqh'}, function (frame) {
-            console.log('Connected: ' + frame);
+      connect() {
+        let vm = this,
+          socket = new SockJS('http://47.107.52.96/chardatainfo'),
+          stompClient = Stomp.over(socket);
+
+        stompClient.connect({name: 'zqh'}, function (frame) {
             //订阅/topic/char地址，当服务端向此地址发送消息时，客户端即可收到。
-            stompClient.subscribe('/user/topic/char', function (greeting) {
-                //收到消息时的回调方法，展示欢迎信息。
-                console.log(greeting.body);
+            stompClient.subscribe('/topic/char', function (receive) {
+              //收到消息时的回调方法，展示欢迎信息。
+              let receiveInfo = (JSON.parse(receive.body)).data;
+
+              if (receiveInfo.theSenderId === vm.userId) {
+
+              } else if (receiveInfo.theReceiveId === vm.userId) {
+
+                vm.$toast('有新的消息，请接收！')
+                vm.refreshCharContent();
+              }
             });
         });
       },
-      */
       loadTop(){
         this.pageLoad(this.pageNum, this.pageSize)
         this.$refs.loadmore.onTopLoaded();
       },
-      pageLoad(pageNum, pageSize){
+      refreshCharContent () {
+        this.charList = [];
+        this.$nextTick(() => {
+          this.pageLoad(this.theSenderId, this.theReceiveId)
+          this.pageLoad(this.theReceiveId, this.theSenderId)
+        });
+      },
+      pageLoad(theSenderId, theReceiveId){
         this.$ajax({
           method: 'get',
-          url: `/charinfo/info/${this.theSenderId}/${this.theReceiveId}`,
+          url: `/charinfo/info/${theSenderId}/${theReceiveId}`,
           params: {
             pageNum: this.pageNum,
             pageSize: this.pageSize
           }
         }).then(res=>{
-          console.log(res)
           if(!res.data.data.hasNextPage){
             this.allLoaded = true;
           }
-          this.charList = res.data.data.list;
-          this.pageNum++;
+          this.charList = this.charList.concat(res.data.data.list);
         }).catch(err=>console.log(err))
       },
       goback () {
@@ -145,7 +164,7 @@
       }
     },
     mounted() {
-      let wH = window.screen.height + 'px';
+      let wH = window.screen.height - 50 + 'px';
       document.querySelector('body').setAttribute('style', 'height:' + wH)
       document.querySelector('#app').setAttribute('style', 'padding: 0 0 40px 0;height:' + wH)
       if(document.querySelector('body .dialogue_index').offsetHeight < window.screen.height - 77){
@@ -178,9 +197,12 @@
   .dialogue_index{
     padding: 10px;
     box-sizing: border-box;
-    /* overflow-y: auto; */
+    overflow-y: auto;
     margin: 40px 0 0;
     height: calc(100vh - 77px);
+  }
+  .dialogue__content {
+    padding-bottom: 45px;
   }
   .dialogue_index .time{
     width: fit-content;
@@ -200,6 +222,7 @@
   }
   .dialogue_index ul li.left{
     display: flex;
+    position: relative;
   }
   .dialogue_index ul li img{
     width: 45px;
@@ -212,13 +235,24 @@
     color: #8e8b8b;
     font-size: 0.9rem;
     background-color: #fff;
-    margin: 0 15px;
+    margin: 20px 15px 0;
     border-radius: 7px;
+  }
+
+  .dialogue_index ul li.left .username {
+    position: absolute;
+    margin: 0 0 0 60px;
   }
 
   .dialogue_index ul li.right{
     display: flex;
     flex-direction: row-reverse;
+    position: relative;
+  }
+  .dialogue_index ul li.right .username{
+
+    position: absolute;
+    margin: 0 0 0 -63px;
   }
 
   .bottom{

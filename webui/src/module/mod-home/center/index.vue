@@ -42,6 +42,14 @@
           </router-link>
         </li>
         <li>
+          <span @click="gotoForum" class="router">
+            <div class="title">
+              <span class="info">我的帖子</span>
+            </div>
+            <div class="alt">></div>
+          </span>
+        </li>
+        <li>
           <router-link to="/center/feedback" class="router">
             <div class="title">
               <span class="info">意见反馈</span>
@@ -64,28 +72,31 @@
         userName: this.$store.getters.getUserName,
         userPhone: this.$store.getters.getUserPhone,
         userEmail: this.$store.getters.getUserEmail,
-        // sheetVisible: false,
-        // actions: [
-        //   {
-        //     name: '拍照',
-        //     method: ()=>{
-        //       console.log("调用拍照")
-        //       plus.gallery.pick(function(e) {
-        //         let name = e.substr(e.lastIndexOf('/') + 1);
-        //         compressImage(e,name);
-        //       }, function(e) {
-        //       }, {
-        //         filter: "image"
-        //       });
-        //     }
-        //   },
-        //   {
-        //     name: '从相册中选择'
-        //   }
-        // ]
+        userId: this.$store.getters.getUserId
       }
     },
     methods: {
+      setUserInfo () {
+        let userId = this.$store.getters.getUserId;
+
+        this.$ajax({
+          method: 'get',
+          url: '/user/' + userId
+        }).then(({data}) => {
+          let userInfo = data.data;
+          this.$store.commit('changeInfo', userInfo);
+          this.userName = userInfo.username;
+          this.userPhone = userInfo.phone;
+          this.userEmail = userInfo.email;
+        });
+      },
+      gotoForum () {
+        let vm = this;
+        vm.$router.push({
+          path: '/forum',
+          query: {userId: vm.userId}
+        });
+      },
       outLogin() {
         this.$store.commit('changeLogin', { token: '', userId: ''});
         this.$router.push({
@@ -97,7 +108,11 @@
       }
     },
     created(){
-      if(!(this.userName && this.userPhone && this.userEmail)){
+      if (this.$store.getters.getUserId) {
+
+        this.setUserInfo();
+      }
+      /*if(!(this.userName && this.userPhone && this.userEmail)){
         this.$ajax({
           url: '/user/' + this.$store.getters.getUserId,
           method: 'get',
@@ -107,7 +122,7 @@
           this.userEmail = res.data.data.email;
           this.$store.commit('changeInfo', { userName: res.data.data.username, userEmail: res.data.data.email, userPhone: res.data.data.phone, createAt: res.data.data.createAt, role: res.data.data.role });
         }).catch(err=>console.log(err))
-      }
+      }*/
     }
 
   }
